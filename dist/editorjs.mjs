@@ -6684,9 +6684,10 @@ function Yr(n, e) {
     var s = document.createRange(), r = window.getSelection();
     if (!r)
       return;
-    var a = function(p) {
-      var g = document.createTextNode("");
-      p.appendChild(g), s.setStart(g, 0), s.setEnd(g, 0);
+    var a = function(p, g) {
+      g === void 0 && (g = !1);
+      var f = document.createTextNode("");
+      g ? p.insertBefore(f, p.firstChild) : p.appendChild(f), s.setStart(f, 0), s.setEnd(f, 0);
     }, l = function(p) {
       return p != null;
     }, c = n.childNodes, d = e ? c[0] : c[c.length - 1];
@@ -6697,7 +6698,7 @@ function Yr(n, e) {
         var h = (o = (t = d.textContent) === null || t === void 0 ? void 0 : t.length) !== null && o !== void 0 ? o : 0, i = e ? 0 : h;
         s.setStart(d, i), s.setEnd(d, i);
       } else
-        a(n);
+        a(n, e);
     } else
       a(n);
     r.removeAllRanges(), r.addRange(s);
