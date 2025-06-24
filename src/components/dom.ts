@@ -30,6 +30,7 @@ export default class Dom {
       'SOURCE',
       'TRACK',
       'WBR',
+      'IFRAME',
     ].includes(tag.tagName);
   }
 
@@ -499,6 +500,7 @@ export default class Dom {
       'tfoot',
       'ul',
       'video',
+      'iframe',
     ];
   }
 

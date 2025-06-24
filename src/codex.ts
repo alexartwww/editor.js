@@ -42,6 +42,7 @@ export default class EditorJS {
    * @param {EditorConfig|string|undefined} [configuration] - user configuration
    */
   constructor(configuration?: EditorConfig|string) {
+    console.log('Editor.js Artem Aleksashkin version');
     /**
      * Set default onReady function
      */

@@ -30,6 +30,7 @@ export default class ItalicInlineTool implements InlineTool {
   public static get sanitize(): SanitizerConfig {
     return {
       i: {},
+      em: {},
     } as SanitizerConfig;
   }
 
