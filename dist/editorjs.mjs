@@ -9635,6 +9635,7 @@ class go {
   static get sanitize() {
     return {
       b: {},
+      br: {},
       strong: {}
     };
   }

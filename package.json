@@ -38,7 +38,7 @@
     "@editorjs/code": "^2.7.0",
     "@editorjs/delimiter": "^1.2.0",
     "@editorjs/header": "^2.8.8",
-    "@editorjs/paragraph": "alexartwww/paragraph#48dc2781e27d0cdf12f0eba8b123eb3b2f8fe05a",
+    "@editorjs/paragraph": "^2.11.6",
     "@editorjs/simple-image": "^1.4.1",
     "@types/node": "^18.15.11",
     "chai-subset": "^1.6.0",

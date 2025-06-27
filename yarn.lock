@@ -757,7 +757,7 @@ __metadata:
     "@editorjs/code": ^2.7.0
     "@editorjs/delimiter": ^1.2.0
     "@editorjs/header": ^2.8.8
-    "@editorjs/paragraph": "alexartwww/paragraph#48dc2781e27d0cdf12f0eba8b123eb3b2f8fe05a"
+    "@editorjs/paragraph": ^2.11.6
     "@editorjs/simple-image": ^1.4.1
     "@types/node": ^18.15.11
     chai-subset: ^1.6.0
@@ -804,9 +804,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@editorjs/paragraph@alexartwww/paragraph#48dc2781e27d0cdf12f0eba8b123eb3b2f8fe05a":
+"@editorjs/paragraph@npm:^2.11.6":
   version: 2.11.7
-  resolution: "@editorjs/paragraph@git+ssh://git@github.com/alexartwww/paragraph.git#commit=48dc2781e27d0cdf12f0eba8b123eb3b2f8fe05a"
+  resolution: "@editorjs/paragraph@npm:2.11.7"
   dependencies:
     "@codexteam/icons": ^0.0.4
   checksum: dc92d01c8089faf56fd2f25fee4e1841b565a62d357e6dbcef4e16f1a22703dcde4bc9fdbb066d5d71d24dab61752a5cf8dffc60a8900e86e1e805836b6f809d
