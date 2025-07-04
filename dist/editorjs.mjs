@@ -11180,7 +11180,7 @@ class Aa {
    * @param {EditorConfig|string|undefined} [configuration] - user configuration
    */
   constructor(e) {
-    console.log("Editor.js Artem Aleksashkin version");
+    console.log("Editor.js Artem Aleksashkin version 2");
     let t = () => {
     };
     D(e) && A(e.onReady) && (t = e.onReady);
