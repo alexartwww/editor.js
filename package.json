@@ -24,7 +24,7 @@
     "test:e2e": "yarn build:test && cypress run",
     "test:e2e:open": "yarn build:test && cypress open"
   },
-  "author": "CodeX",
+  "author": "CodeX + Artem Aleksashkin + 2",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
