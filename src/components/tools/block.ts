@@ -164,6 +164,13 @@ export default class BlockToolAdapter extends BaseToolAdapter<ToolType.Block, IB
   }
 
   /**
+   * Returns Tool paste configuration
+   */
+  public get blockConfig(): { [param: string]: boolean } {
+    return this.constructable[InternalBlockToolSettings.BlockConfig] ?? {};
+  }
+
+  /**
    * Returns sanitize configuration for Block Tool including configs from related Inline Tools and Block Tunes
    */
   @_.cacheable

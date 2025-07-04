@@ -125,6 +125,11 @@ export default class Paste extends Module {
    */
   private tagsByTool: { [tools: string]: string[] } = {};
 
+  /**
+   * Store tags to substitute by tool name
+   */
+  private blockConfigByTool: { [tool: string]: {[param: string]: boolean} } = {};
+
   /** Patterns` substitutions parameters */
   private toolsPatterns: PatternSubstitute[] = [];
 
@@ -307,6 +312,7 @@ export default class Paste extends Module {
       this.getTagsConfig(tool);
       this.getFilesConfig(tool);
       this.getPatternsConfig(tool);
+      this.getBlockConfig(tool);
     } catch (e) {
       _.log(
         `Paste handling for «${tool.name}» Tool hasn't been set up because of the error`,
@@ -340,6 +346,25 @@ export default class Paste extends Module {
     return [];
   }
 
+  /**
+   * Get tags to substitute by Tool
+   *
+   * @param tool - BlockTool object
+   */
+  private getBlockConfig(tool: BlockToolAdapter): void {
+    if (tool.blockConfig === false) {
+      return;
+    }
+
+    this.blockConfigByTool[tool.name] = tool.blockConfig || {};
+  }
+
+  private getBlockConfigByToolValue(toolName: string, key: string, defaultValue?: boolean): boolean {
+    if (defaultValue === undefined) {
+      defaultValue = false;
+    }
+    return (this.blockConfigByTool[toolName] || {})[key] || defaultValue;
+  }
   /**
    * Get tags to substitute by Tool
    *
@@ -666,19 +691,22 @@ export default class Paste extends Module {
 
         const customConfig = Object.assign({}, toolTags, tool.baseSanitizeConfig);
 
-        /**
-         * A workaround for the HTMLJanitor bug with Tables (incorrect sanitizing of table.innerHTML)
-         * https://github.com/guardian/html-janitor/issues/3
-         */
-        if (content.tagName.toLowerCase() === 'table') {
-          const cleanTableHTML = clean(content.outerHTML, customConfig);
-          const tmpWrapper = $.make('div', undefined, {
-            innerHTML: cleanTableHTML,
-          });
 
-          content = tmpWrapper.firstChild;
-        } else {
-          content.innerHTML = clean(content.innerHTML, customConfig);
+        if (!(this.getBlockConfigByToolValue(tool.name, 'skipSanitizer', false))) {
+          /**
+           * A workaround for the HTMLJanitor bug with Tables (incorrect sanitizing of table.innerHTML)
+           * https://github.com/guardian/html-janitor/issues/3
+           */
+          if (content.tagName.toLowerCase() === 'table') {
+            const cleanTableHTML = clean(content.outerHTML, customConfig);
+            const tmpWrapper = $.make('div', undefined, {
+              innerHTML: cleanTableHTML,
+            });
+
+            content = tmpWrapper.firstChild;
+          } else {
+            content.innerHTML = clean(content.innerHTML, customConfig);
+          }
         }
 
         const event = this.composePasteEvent('tag', {
@@ -905,30 +933,35 @@ export default class Paste extends Module {
     const element = node as HTMLElement;
 
     const { tool } = this.toolsTags[element.tagName] || {};
-    const toolTags = this.tagsByTool[tool?.name] || [];
+    const toolName = tool?.name || '';
+    const toolTags = this.tagsByTool[toolName] || [];
 
+    // является заменяемым
     const isSubstitutable = tags.includes(element.tagName);
+    // блочный
     const isBlockElement = $.blockElements.includes(element.tagName.toLowerCase());
+    // содержит другие теги тулов
     const containsAnotherToolTags = Array
       .from(element.children)
       .some(
         ({ tagName }) => tags.includes(tagName) && !toolTags.includes(tagName)
       );
+    const ignoreContainsAnotherToolTags = this.getBlockConfigByToolValue(toolName, 'ignoreContainsAnotherToolTags', false);
 
     const containsBlockElements = Array.from(element.children).some(
       ({ tagName }) => $.blockElements.includes(tagName.toLowerCase())
     );
 
     /** Append inline elements to previous fragment */
-    if (!isBlockElement && !isSubstitutable && !containsAnotherToolTags) {
+    if (!isBlockElement && !isSubstitutable && (!containsAnotherToolTags || ignoreContainsAnotherToolTags)) {
       destNode.appendChild(element);
 
       return [...nodes, destNode];
     }
 
     if (
-      (isSubstitutable && !containsAnotherToolTags) ||
-      (isBlockElement && !containsBlockElements && !containsAnotherToolTags)
+      (isSubstitutable && (!containsAnotherToolTags || ignoreContainsAnotherToolTags)) ||
+      (isBlockElement && !containsBlockElements && (!containsAnotherToolTags || ignoreContainsAnotherToolTags))
     ) {
       return [...nodes, destNode, element];
     }

@@ -71,7 +71,11 @@ export enum InternalBlockToolSettings {
   /**
    * Tool paste config
    */
-  PasteConfig = 'pasteConfig'
+  PasteConfig = 'pasteConfig',
+  /**
+   * Tool block config
+   */
+  BlockConfig = 'blockConfig',
 }
 
 /**
