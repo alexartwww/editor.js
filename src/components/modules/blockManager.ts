@@ -282,6 +282,15 @@ export default class BlockManager extends Module {
     replace?: boolean;
     tunes?: {[name: string]: BlockTuneData};
   } = {}): Block {
+    // Проверяем singleton — если такой блок уже есть, возвращаем существующий
+    const toolConfig = this.Editor.Tools.blockTools.get(tool);
+    if (toolConfig?.settings?.singleton === true) {
+      const existingBlock = this.blocks.find(b => b.name === tool);
+      if (existingBlock) {
+        return existingBlock;
+      }
+    }
+
     let newIndex = index;
 
     if (newIndex === undefined) {
@@ -400,6 +409,15 @@ export default class BlockManager extends Module {
     pasteEvent: PasteEvent,
     replace = false
   ): Block {
+    // Проверяем singleton
+    const toolConfig = this.Editor.Tools.blockTools.get(toolName);
+    if (toolConfig?.settings?.singleton === true) {
+      const existingBlock = this.blocks.find(b => b.name === toolName);
+      if (existingBlock) {
+        return existingBlock;
+      }
+    }
+
     const block = this.insert({
       tool: toolName,
       replace,

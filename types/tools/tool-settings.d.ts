@@ -66,6 +66,10 @@ export interface ExternalToolSettings<Config extends object = any> {
    * It will be hidden from Toolbox when false is specified.
    */
   toolbox?: ToolboxConfig | false;
+
+  singleton?: boolean;
+  movable?: boolean;
+  deleteable?: boolean;
 }
 
 /**
