@@ -37,14 +37,20 @@ export default class MoveDownTune implements BlockTune {
    *
    * @param {API} api — Editor's API
    */
-  constructor({ api }) {
+  private readonly block: any;  // добавить поле
+
+  constructor({ api, block }) {
     this.api = api;
+    this.block = block;  // добавить
   }
 
   /**
    * Tune's appearance in block settings menu
    */
   public render(): TunesMenuConfig {
+    if (this.block?.config?.movable === true) {
+      return [];
+    }
     return {
       icon: IconChevronDown,
       title: this.api.i18n.t('Move down'),
@@ -57,6 +63,9 @@ export default class MoveDownTune implements BlockTune {
    * Handle clicks on 'move down' button
    */
   public handleClick(): void {
+    if (this.block?.config?.movable === true) {
+      return;
+    }
     const currentBlockIndex = this.api.blocks.getCurrentBlockIndex();
     const nextBlock = this.api.blocks.getBlockByIndex(currentBlockIndex + 1);
 

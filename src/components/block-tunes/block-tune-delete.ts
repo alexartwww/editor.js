@@ -28,14 +28,20 @@ export default class DeleteTune implements BlockTune {
    *
    * @param {API} api - Editor's API
    */
-  constructor({ api }) {
+  private readonly block: any;  // добавить поле
+
+  constructor({ api, block }) {
     this.api = api;
+    this.block = block;  // добавить
   }
 
   /**
    * Tune's appearance in block settings menu
    */
   public render(): MenuConfig {
+    if (this.block?.config?.deleteable === true) {
+      return [];
+    }
     return {
       icon: IconCross,
       title: this.api.i18n.t('Delete'),
@@ -51,6 +57,9 @@ export default class DeleteTune implements BlockTune {
    * Delete block conditions passed
    */
   public handleClick(): void {
+    if (this.block?.config?.deleteable === true) {
+      return;
+    }
     this.api.blocks.delete();
   }
 }

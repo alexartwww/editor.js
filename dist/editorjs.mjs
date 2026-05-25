@@ -10248,21 +10248,18 @@ class xa {
   }
 }
 class $n {
-  /**
-   * MoveDownTune constructor
-   *
-   * @param {API} api — Editor's API
-   */
-  constructor({ api: e }) {
+  // добавить поле
+  constructor({ api: e, block: t }) {
     this.CSS = {
       animation: "wobble"
-    }, this.api = e;
+    }, this.api = e, this.block = t;
   }
   /**
    * Tune's appearance in block settings menu
    */
   render() {
-    return {
+    var e, t;
+    return ((t = (e = this.block) == null ? void 0 : e.config) == null ? void 0 : t.movable) === !0 ? [] : {
       icon: Xi,
       title: this.api.i18n.t("Move down"),
       onActivate: () => this.handleClick(),
@@ -10273,6 +10270,9 @@ class $n {
    * Handle clicks on 'move down' button
    */
   handleClick() {
+    var r, a;
+    if (((a = (r = this.block) == null ? void 0 : r.config) == null ? void 0 : a.movable) === !0)
+      return;
     const e = this.api.blocks.getCurrentBlockIndex(), t = this.api.blocks.getBlockByIndex(e + 1);
     if (!t)
       throw new Error("Unable to move Block down since it is already the last");
@@ -10283,19 +10283,16 @@ class $n {
 }
 $n.isTune = !0;
 class zn {
-  /**
-   * DeleteTune constructor
-   *
-   * @param {API} api - Editor's API
-   */
-  constructor({ api: e }) {
-    this.api = e;
+  // добавить поле
+  constructor({ api: e, block: t }) {
+    this.api = e, this.block = t;
   }
   /**
    * Tune's appearance in block settings menu
    */
   render() {
-    return {
+    var e, t;
+    return ((t = (e = this.block) == null ? void 0 : e.config) == null ? void 0 : t.deleteable) === !0 ? [] : {
       icon: Gi,
       title: this.api.i18n.t("Delete"),
       name: "delete",
@@ -10309,26 +10306,24 @@ class zn {
    * Delete block conditions passed
    */
   handleClick() {
-    this.api.blocks.delete();
+    var e, t;
+    ((t = (e = this.block) == null ? void 0 : e.config) == null ? void 0 : t.deleteable) !== !0 && this.api.blocks.delete();
   }
 }
 zn.isTune = !0;
 class Un {
-  /**
-   * MoveUpTune constructor
-   *
-   * @param {API} api - Editor's API
-   */
-  constructor({ api: e }) {
+  // добавить поле
+  constructor({ api: e, block: t }) {
     this.CSS = {
       animation: "wobble"
-    }, this.api = e;
+    }, this.api = e, this.block = t;
   }
   /**
    * Tune's appearance in block settings menu
    */
   render() {
-    return {
+    var e, t;
+    return ((t = (e = this.block) == null ? void 0 : e.config) == null ? void 0 : t.movable) === !0 ? [] : {
       icon: Zi,
       title: this.api.i18n.t("Move up"),
       onActivate: () => this.handleClick(),
@@ -10339,6 +10334,9 @@ class Un {
    * Move current block up
    */
   handleClick() {
+    var c, d;
+    if (((d = (c = this.block) == null ? void 0 : c.config) == null ? void 0 : d.movable) === !0)
+      return;
     const e = this.api.blocks.getCurrentBlockIndex(), t = this.api.blocks.getBlockByIndex(e), o = this.api.blocks.getBlockByIndex(e - 1);
     if (e === 0 || !t || !o)
       throw new Error("Unable to move Block up since it is already the first");

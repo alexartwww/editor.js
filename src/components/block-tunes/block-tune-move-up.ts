@@ -35,14 +35,20 @@ export default class MoveUpTune implements BlockTune {
    *
    * @param {API} api - Editor's API
    */
-  constructor({ api }) {
+  private readonly block: any;  // добавить поле
+
+  constructor({ api, block }) {
     this.api = api;
+    this.block = block;  // добавить
   }
 
   /**
    * Tune's appearance in block settings menu
    */
   public render(): TunesMenuConfig {
+    if (this.block?.config?.movable === true) {
+      return [];
+    }
     return {
       icon: IconChevronUp,
       title: this.api.i18n.t('Move up'),
@@ -55,6 +61,9 @@ export default class MoveUpTune implements BlockTune {
    * Move current block up
    */
   public handleClick(): void {
+    if (this.block?.config?.movable === true) {
+      return;
+    }
     const currentBlockIndex = this.api.blocks.getCurrentBlockIndex();
     const currentBlock = this.api.blocks.getBlockByIndex(currentBlockIndex);
     const previousBlock = this.api.blocks.getBlockByIndex(currentBlockIndex - 1);
