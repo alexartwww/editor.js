@@ -125,6 +125,9 @@ export default class BlockSettings extends Module<BlockSettingsNodes> {
 
     /** Get tool's settings data */
     const { toolTunes, commonTunes } = targetBlock.getTunes();
+    if (toolTunes.length === 0 && commonTunes.length === 0) {
+      return;
+    }
 
     /** Tell to subscribers that block settings is opened */
     this.eventsDispatcher.emit(this.events.opened);

@@ -21,6 +21,7 @@ import { BlockChanged } from '../events';
 import { clean, sanitizeBlocks } from '../utils/sanitizer';
 import { convertStringToBlockData, isBlockConvertable } from '../utils/blocks';
 import PromiseQueue from '../utils/promise-queue';
+import {ToolConfig} from "../../../types";
 
 /**
  * @typedef {BlockManager} BlockManager
@@ -295,6 +296,15 @@ export default class BlockManager extends Module {
 
     if (newIndex === undefined) {
       newIndex = this.currentBlockIndex + (replace ? 0 : 1);
+    }
+
+    // защита: если заменяемый блок защищён — не заменяем, а вставляем после
+    if (replace) {
+      const blockToReplace = this.getBlockByIndex(newIndex);
+      if (blockToReplace?.settings?.holdFirstHeader === true && blockToReplace?.holder.previousElementSibling === null) {
+        replace = false;
+        newIndex = newIndex + 1;
+      }
     }
 
     const block = this.composeBlock({
@@ -685,6 +695,15 @@ export default class BlockManager extends Module {
    */
   public getBlockIndex(block: Block): number {
     return this._blocks.indexOf(block);
+  }
+
+  /**
+   * Returns an index for passed Block
+   *
+   * @param block - block to find index
+   */
+  public getBlockSettings(block: Block): ToolConfig | undefined {
+    return block.settings || undefined;
   }
 
   /**

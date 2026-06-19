@@ -48,9 +48,12 @@ export default class MoveDownTune implements BlockTune {
    * Tune's appearance in block settings menu
    */
   public render(): TunesMenuConfig {
-    if (this.block?.config?.movable === true) {
+    const currentBlockIndex = this.api.blocks.getCurrentBlockIndex();
+    const currentBlockSettings = this.api.blocks.getBlockSettingsByIndex(currentBlockIndex);
+    if (currentBlockIndex === 0 && currentBlockSettings && currentBlockSettings.holdFirstHeader === true) {
       return [];
     }
+
     return {
       icon: IconChevronDown,
       title: this.api.i18n.t('Move down'),
@@ -63,11 +66,13 @@ export default class MoveDownTune implements BlockTune {
    * Handle clicks on 'move down' button
    */
   public handleClick(): void {
-    if (this.block?.config?.movable === true) {
-      return;
-    }
     const currentBlockIndex = this.api.blocks.getCurrentBlockIndex();
-    const nextBlock = this.api.blocks.getBlockByIndex(currentBlockIndex + 1);
+    const currentBlockSettings = this.api.blocks.getBlockSettingsByIndex(currentBlockIndex);
+    const nextBlockIndex = currentBlockIndex + 1;
+    const nextBlock = this.api.blocks.getBlockByIndex(nextBlockIndex);
+    if (currentBlockIndex === 0 && currentBlockSettings && currentBlockSettings.holdFirstHeader === true) {
+      throw new Error('holdFirstHeader === true');
+    }
 
     // If Block is last do nothing
     if (!nextBlock) {
@@ -90,7 +95,7 @@ export default class MoveDownTune implements BlockTune {
     window.scrollTo(0, scrollOffset);
 
     /** Change blocks positions */
-    this.api.blocks.move(currentBlockIndex + 1);
+    this.api.blocks.move(nextBlockIndex);
 
     this.api.toolbar.toggleBlockSettings(true);
   }

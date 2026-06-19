@@ -121,7 +121,7 @@ export default class Block extends EventsDispatcher<BlockEvents> {
   /**
    * Block unique identifier
    */
-  public id: string;
+  public id: string | undefined;
 
   /**
    * Block Tool`s name
@@ -433,6 +433,11 @@ export default class Block extends EventsDispatcher<BlockEvents> {
    * @param {boolean} state - 'true' to select, 'false' to remove selection
    */
   public set selected(state: boolean) {
+    const parent = this.holder.parentElement;
+    const index = Array.from(parent?.children || []).indexOf(this.holder);
+    if (index === 0 && this.tool.name === 'header' && this.settings.holdFirstHeader === true) {
+      state = false;
+    }
     this.holder.classList.toggle(Block.CSS.selected, state);
 
     const fakeCursorWillBeAdded = state === true && SelectionUtils.isRangeInsideContainer(this.holder);
@@ -627,10 +632,15 @@ export default class Block extends EventsDispatcher<BlockEvents> {
     }
 
     /** Common tunes: combination of default tunes (move up, move down, delete) and third-party tunes connected via tunes api */
-    const commonTunes = [
+    let commonTunes = [
       ...this.tunesInstances.values(),
       ...this.defaultTunesInstances.values(),
     ].map(tuneInstance => tuneInstance.render());
+
+    const skipTunes = this.settings.skipTunes || [];
+    commonTunes = commonTunes.filter((item) => {
+      return skipTunes.indexOf(item['name'] || '') === -1;
+    });
 
     /** Separate custom html from Popover items params for common tunes */
     commonTunes.forEach(tuneConfig => {
@@ -645,7 +655,6 @@ export default class Block extends EventsDispatcher<BlockEvents> {
         commonTunesPopoverParams.push(tuneConfig);
       }
     });
-
     return {
       toolTunes: toolTunesPopoverParams,
       commonTunes: commonTunesPopoverParams,
@@ -798,6 +807,7 @@ export default class Block extends EventsDispatcher<BlockEvents> {
    * @private
    */
   private composeTunes(tunesData: { [name: string]: BlockTuneData }): void {
+    // debugger
     Array.from(this.tunes.values()).forEach((tune) => {
       const collection = tune.isInternal ? this.defaultTunesInstances : this.tunesInstances;
 

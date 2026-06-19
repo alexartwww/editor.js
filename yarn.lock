@@ -769,19 +769,23 @@ __metadata:
     cypress-plugin-tab: ^1.0.5
     cypress-terminal-report: ^5.3.2
     cypress-vite: ^1.5.0
+    debounce: ^3.0.0
     eslint: ^8.37.0
     eslint-config-codex: ^1.7.1
     eslint-plugin-chai-friendly: ^0.7.2
     eslint-plugin-cypress: 2.12.1
     html-janitor: ^2.0.4
+    http-build-query: ^0.7.0
     nanoid: ^4.0.2
     postcss-apply: ^0.12.0
     postcss-nested: 4.1.2
     postcss-preset-env: ^8.3.0
+    promise-polyfill: ^8.1.0
     rollup-plugin-license: ^3.0.1
     stylelint: ^15.4.0
     tslint: ^6.1.1
     typescript: 5.0.3
+    url-polyfill: ^1.1.9
     vite: ^4.2.1
     vite-plugin-css-injected-by-js: ^3.1.0
   languageName: unknown
@@ -2605,6 +2609,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"debounce@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "debounce@npm:3.0.0"
+  checksum: 131cfbd31910c02fb0c8bb4223fb2c73255a68873ffc9220ea82f1fb85b4dd4e7611d3fb1a82c96b23656fba30795afa14883ffb1a7918515982ae5598b6ef66
+  languageName: node
+  linkType: hard
+
 "debug@npm:4, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.4, debug@npm:^4.3.5":
   version: 4.4.1
   resolution: "debug@npm:4.4.1"
@@ -4162,6 +4173,13 @@ __metadata:
   version: 3.3.1
   resolution: "html-tags@npm:3.3.1"
   checksum: b4ef1d5a76b678e43cce46e3783d563607b1d550cab30b4f511211564574770aa8c658a400b100e588bc60b8234e59b35ff72c7851cc28f3b5403b13a2c6cbce
+  languageName: node
+  linkType: hard
+
+"http-build-query@npm:^0.7.0":
+  version: 0.7.0
+  resolution: "http-build-query@npm:0.7.0"
+  checksum: 8d1064a2db6eb376a34715b92f117c2669facfbed8912d9e70675ab1893abfc243f59a1126f4bc5b2ec12edd938268572ee9429e008ab4c58c8a45696bb41640
   languageName: node
   linkType: hard
 
@@ -6488,6 +6506,13 @@ mocha@latest:
   languageName: node
   linkType: hard
 
+"promise-polyfill@npm:^8.1.0":
+  version: 8.3.0
+  resolution: "promise-polyfill@npm:8.3.0"
+  checksum: 206373802076c77def0805758d0a8ece64120dfa6603f092404a1004211f8f2f67f33cadbc35953fc2a8ed0b0d38c774e88bdf01e20ce7a920723a60df84b7a5
+  languageName: node
+  linkType: hard
+
 "promise-retry@npm:^2.0.1":
   version: 2.0.1
   resolution: "promise-retry@npm:2.0.1"
@@ -7906,6 +7931,13 @@ mocha@latest:
   dependencies:
     punycode: ^2.1.0
   checksum: 7167432de6817fe8e9e0c9684f1d2de2bb688c94388f7569f7dbdb1587c9f4ca2a77962f134ec90be0cc4d004c939ff0d05acc9f34a0db39a3c797dada262633
+  languageName: node
+  linkType: hard
+
+"url-polyfill@npm:^1.1.9":
+  version: 1.1.14
+  resolution: "url-polyfill@npm:1.1.14"
+  checksum: a1ed653f8386804206f7af5f05b3885d3e59fd1162f8aececd4998738fa7e16cad89269f3f455f2225e49cd83c851f9ec739a0b97613447202c749569353dfc7
   languageName: node
   linkType: hard
 

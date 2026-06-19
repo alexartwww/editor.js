@@ -39,9 +39,12 @@ export default class DeleteTune implements BlockTune {
    * Tune's appearance in block settings menu
    */
   public render(): MenuConfig {
-    if (this.block?.config?.deleteable === true) {
+    const currentBlockIndex = this.api.blocks.getCurrentBlockIndex();
+    const currentBlockSettings = this.api.blocks.getBlockSettingsByIndex(currentBlockIndex);
+    if (currentBlockIndex === 0 && currentBlockSettings && currentBlockSettings.holdFirstHeader === true) {
       return [];
     }
+
     return {
       icon: IconCross,
       title: this.api.i18n.t('Delete'),
@@ -57,9 +60,12 @@ export default class DeleteTune implements BlockTune {
    * Delete block conditions passed
    */
   public handleClick(): void {
-    if (this.block?.config?.deleteable === true) {
-      return;
+    const currentBlockIndex = this.api.blocks.getCurrentBlockIndex();
+    const currentBlockSettings = this.api.blocks.getBlockSettingsByIndex(currentBlockIndex);
+    if (currentBlockIndex === 0 && currentBlockSettings && currentBlockSettings.holdFirstHeader === true) {
+      throw new Error('holdFirstHeader === true');
     }
+
     this.api.blocks.delete();
   }
 }

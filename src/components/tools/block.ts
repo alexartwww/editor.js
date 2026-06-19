@@ -153,6 +153,7 @@ export default class BlockToolAdapter extends BaseToolAdapter<ToolType.Block, IB
    * Returns enabled tunes for Tool
    */
   public get enabledBlockTunes(): boolean | string[] {
+    //debugger
     return this.config[UserSettings.EnabledBlockTunes];
   }
 

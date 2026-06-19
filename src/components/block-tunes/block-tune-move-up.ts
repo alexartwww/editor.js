@@ -46,7 +46,9 @@ export default class MoveUpTune implements BlockTune {
    * Tune's appearance in block settings menu
    */
   public render(): TunesMenuConfig {
-    if (this.block?.config?.movable === true) {
+    const currentBlockIndex = this.api.blocks.getCurrentBlockIndex();
+    const currentBlockSettings = this.api.blocks.getBlockSettingsByIndex(currentBlockIndex);
+    if (currentBlockIndex === 0 && currentBlockSettings && currentBlockSettings.holdFirstHeader === true) {
       return [];
     }
     return {
@@ -61,13 +63,14 @@ export default class MoveUpTune implements BlockTune {
    * Move current block up
    */
   public handleClick(): void {
-    if (this.block?.config?.movable === true) {
-      return;
-    }
     const currentBlockIndex = this.api.blocks.getCurrentBlockIndex();
     const currentBlock = this.api.blocks.getBlockByIndex(currentBlockIndex);
-    const previousBlock = this.api.blocks.getBlockByIndex(currentBlockIndex - 1);
-
+    const previousBlockIndex = currentBlockIndex - 1;
+    const previousBlock = this.api.blocks.getBlockByIndex(previousBlockIndex);
+    const previousBlockSettings = this.api.blocks.getBlockSettingsByIndex(previousBlockIndex);
+    if (previousBlockIndex === 0 && previousBlockSettings && previousBlockSettings.holdFirstHeader === true) {
+      throw new Error('holdFirstHeader === true');
+    }
     if (currentBlockIndex === 0 || !currentBlock || !previousBlock) {
       throw new Error('Unable to move Block up since it is already the first');
     }
@@ -97,7 +100,7 @@ export default class MoveUpTune implements BlockTune {
     window.scrollBy(0, -1 * scrollUpOffset);
 
     /** Change blocks positions */
-    this.api.blocks.move(currentBlockIndex - 1);
+    this.api.blocks.move(previousBlockIndex);
 
     this.api.toolbar.toggleBlockSettings(true);
   }

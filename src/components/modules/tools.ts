@@ -1,4 +1,4 @@
-import Paragraph from '@editorjs/paragraph';
+import Paragraph from '../../tools/paragraph/index.ts';
 import Module from '../__module';
 import * as _ from '../utils';
 import type { SanitizerConfig, ToolConfig, ToolConstructable, ToolSettings } from '../../../types';
@@ -111,8 +111,9 @@ export default class Tools extends Module {
     /**
      * Assign internal tools
      */
+    //debugger
     this.config.tools = _.deepMerge({}, this.internalTools, this.config.tools);
-
+    // this.config.tools = _.deepMerge({}, this.config.tools);
     if (!Object.prototype.hasOwnProperty.call(this.config, 'tools') || Object.keys(this.config.tools).length === 0) {
       throw Error('Can\'t start without tools');
     }

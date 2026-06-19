@@ -47,6 +47,7 @@ export default class ToolsCollection<V extends ToolClass = ToolClass> extends Ma
    * Returns internal Tools collection
    */
   public get internalTools(): ToolsCollection<V> {
+    // debugger
     const tools = Array
       .from(this.entries())
       .filter(([, tool]) => tool.isInternal);

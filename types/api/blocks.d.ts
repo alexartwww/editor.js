@@ -72,6 +72,10 @@ export interface Blocks {
    */
   getBlockIndex(blockId: string): number;
 
+  getBlockSettings(blockId: string): ToolConfig | undefined;
+
+  getBlockSettingsByIndex(index: number): ToolConfig | undefined;
+
   /**
    * Get Block API object by html element
    *

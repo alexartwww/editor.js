@@ -201,6 +201,11 @@ export default class Toolbox extends EventsDispatcher<ToolboxEventMap> {
    * Open Toolbox with Tools
    */
   public open(): void {
+    const currentBlockIndex = this.api.blocks.getCurrentBlockIndex();
+    const currentBlockSettings = this.api.blocks.getBlockSettingsByIndex(currentBlockIndex);
+    if (currentBlockSettings.holdFirstHeader === true && currentBlockIndex == 0) {
+      return;
+    }
     if (this.isEmpty) {
       return;
     }

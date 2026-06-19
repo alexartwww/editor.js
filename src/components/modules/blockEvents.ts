@@ -348,6 +348,10 @@ export default class BlockEvents extends Module {
     const { BlockManager, Caret } = this.Editor;
     const { currentBlock, previousBlock } = BlockManager;
 
+    if (previousBlock?.settings?.holdFirstHeader === true) {
+      return;
+    }
+
     if (currentBlock === undefined) {
       return;
     }

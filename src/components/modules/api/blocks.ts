@@ -29,6 +29,8 @@ export default class BlocksAPI extends Module {
       getById: (id: string): BlockAPIInterface | null => this.getById(id),
       getCurrentBlockIndex: (): number => this.getCurrentBlockIndex(),
       getBlockIndex: (id: string): number => this.getBlockIndex(id),
+      getBlockSettings: (id: string): number => this.getBlockSettings(id),
+      getBlockSettingsByIndex: (index: number): number => this.getBlockSettingsByIndex(index),
       getBlocksCount: (): number => this.getBlocksCount(),
       getBlockByElement: (element: HTMLElement) => this.getBlockByElement(element),
       stretchBlock: (index: number, status = true): void => this.stretchBlock(index, status),
@@ -64,7 +66,7 @@ export default class BlocksAPI extends Module {
    *
    * @param id - block id
    */
-  public getBlockIndex(id: string): number | undefined {
+  public getBlockIndex(id: string): number {
     const block = this.Editor.BlockManager.getBlockById(id);
 
     if (!block) {
@@ -74,6 +76,35 @@ export default class BlocksAPI extends Module {
     }
 
     return this.Editor.BlockManager.getBlockIndex(block);
+  }
+
+  /**
+   * Returns the index of Block by id;
+   *
+   * @param id - block id
+   */
+  public getBlockSettings(id: string): ToolConfig | undefined {
+    const block = this.Editor.BlockManager.getBlockById(id);
+
+    if (!block) {
+      _.logLabeled('There is no block with id `' + id + '`', 'warn');
+
+      return;
+    }
+
+    return this.Editor.BlockManager.getBlockSettings(block);
+  }
+
+  public getBlockSettingsByIndex(index: number): ToolConfig | undefined {
+    const block = this.Editor.BlockManager.getBlockByIndex(index);
+
+    if (!block) {
+      _.logLabeled('There is no block with id `' + id + '`', 'warn');
+
+      return;
+    }
+
+    return this.Editor.BlockManager.getBlockSettings(block);
   }
 
   /**

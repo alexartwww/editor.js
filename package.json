@@ -53,14 +53,17 @@
     "eslint-plugin-chai-friendly": "^0.7.2",
     "eslint-plugin-cypress": "2.12.1",
     "html-janitor": "^2.0.4",
+    "http-build-query": "^0.7.0",
     "nanoid": "^4.0.2",
     "postcss-apply": "^0.12.0",
     "postcss-nested": "4.1.2",
     "postcss-preset-env": "^8.3.0",
+    "promise-polyfill": "^8.1.0",
     "rollup-plugin-license": "^3.0.1",
     "stylelint": "^15.4.0",
     "tslint": "^6.1.1",
     "typescript": "5.0.3",
+    "url-polyfill": "^1.1.9",
     "vite": "^4.2.1",
     "vite-plugin-css-injected-by-js": "^3.1.0"
   },
@@ -71,6 +74,7 @@
   "dependencies": {
     "@editorjs/caret": "^1.0.1",
     "codex-notifier": "^1.1.2",
-    "codex-tooltip": "^1.0.5"
+    "codex-tooltip": "^1.0.5",
+    "debounce": "^3.0.0"
   }
 }
