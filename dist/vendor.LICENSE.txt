@@ -1,5 +1,5 @@
 Name: @babel/register
-Version: 7.27.1
+Version: 7.21.0
 License: MIT
 Private: false
 Description: babel require hook
@@ -31,6 +31,7 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 
 ---
 
@@ -64,6 +65,7 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 
 ---
 
@@ -99,6 +101,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
 
 ---
 
@@ -312,6 +315,7 @@ Apache License
    See the License for the specific language governing permissions and
    limitations under the License.
 
+
 ---
 
 Name: codex-tooltip
@@ -332,6 +336,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 
 ---
 
@@ -364,6 +369,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
 
 ---
 
@@ -403,7 +409,7 @@ SOFTWARE.
 ---
 
 Name: @editorjs/caret
-Version: 1.0.3
+Version: 1.0.1
 License: MIT
 Private: false
 Description: Utils useful for work with caret for Editor.js tools development
@@ -412,7 +418,7 @@ Repository: undefined
 ---
 
 Name: @editorjs/dom
-Version: 1.0.1
+Version: 1.0.0
 License: MIT
 Private: false
 Description: Utils useful for work with dom for Editor.js tools development
@@ -421,7 +427,7 @@ Repository: undefined
 ---
 
 Name: @editorjs/helpers
-Version: 1.0.1
+Version: 1.0.0
 License: MIT
 Private: false
 Description: Utils useful for Editor.js tools development
