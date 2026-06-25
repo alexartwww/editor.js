@@ -6,6 +6,7 @@ import './index.css';
 import { IconH1, IconH2, IconH3, IconH4, IconH5, IconH6, IconHeading } from '@codexteam/icons';
 import { API, BlockTool, PasteEvent } from '@editorjs/editorjs';
 import type { MenuConfig } from '@editorjs/editorjs/types/tools';
+import {SanitizerConfig} from "@/types";
 
 /**
  * @description Tool's input and output data format
@@ -130,6 +131,40 @@ export default class Header implements BlockTool {
      * @private
      */
     this._element = this.getTag();
+    // const observer = new MutationObserver((mutations) => {
+    //   mutations.forEach((mutation) => {
+    //     mutation.addedNodes.forEach((node) => {
+    //       if (node.nodeName === 'BR') {
+    //         console.log('BR добавлен!', node);
+    //         console.trace(); // покажет стек вызовов — кто вставил
+    //       }
+    //     });
+    //   });
+    // });
+    //
+    // observer.observe(this._element, { childList: true, subtree: true });
+  }
+
+  /**
+   * Check if text content is empty and set empty string to inner html.
+   * We need this because some browsers (e.g. Safari) insert <br> into empty contenteditanle elements
+   *
+   * @param {KeyboardEvent} e - key up event
+   */
+  onKeyUp(e: KeyboardEvent): void {
+    // if (e.code !== 'Backspace' && e.code !== 'Delete') {
+    //   return;
+    // }
+
+    if (!this._element) {
+      return;
+    }
+
+    const { textContent } = this._element;
+
+    if (textContent.replace(/<br\s*\/?>/gi, '').trim() === '') {
+      this._element.innerHTML = '';
+    }
   }
 
   private get _CSS() {
@@ -175,8 +210,7 @@ export default class Header implements BlockTool {
   /**
    * Return Tool's view
    *
-   * @returns {HTMLHeadingElement}
-   * @public
+   * @returns {HTMLDivElement}
    */
   render(): HTMLHeadingElement {
     return this._element;
@@ -275,10 +309,11 @@ export default class Header implements BlockTool {
   /**
    * Sanitizer Rules
    */
-  static get sanitize() {
+  static get sanitize(): SanitizerConfig {
     return {
-      level: false,
-      text: {},
+      text: {
+        br: false,
+      },
     };
   }
 
@@ -370,6 +405,7 @@ export default class Header implements BlockTool {
     /**
      * Add text to block
      */
+    console.log('text', this._data.text);
     tag.innerHTML = this._data.text || '';
 
     /**
@@ -381,6 +417,11 @@ export default class Header implements BlockTool {
      * Make tag editable
      */
     tag.contentEditable = this.readOnly ? 'false' : 'true';
+
+    if (!this.readOnly) {
+      tag.addEventListener('keyup', this.onKeyUp);
+    }
+
     if (currentLevel.number === 1) {
       tag.dataset['placeholder'] = this.api.i18n.t(this._config?.placeholder || '');
     } else {

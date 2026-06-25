@@ -71,19 +71,23 @@ export default class ConvertInlineTool implements InlineTool {
       return [];
     }
 
+    const uniqueTools = [];
     const convertToItems = convertibleTools.reduce<MenuConfigItem[]>((result, tool) => {
       tool.toolbox?.forEach((toolboxItem) => {
-        result.push({
-          icon: toolboxItem.icon,
-          title: I18nInternal.t(I18nInternalNS.toolNames, toolboxItem.title),
-          name: tool.name,
-          closeOnActivate: true,
-          onActivate: async () => {
-            const newBlock = await this.blocksAPI.convert(currentBlock.id, tool.name, toolboxItem.data);
+        if (uniqueTools.indexOf(toolboxItem.title) === -1) {
+          result.push({
+            icon: toolboxItem.icon,
+            title: I18nInternal.t(I18nInternalNS.toolNames, toolboxItem.title || ''),
+            name: tool.name,
+            closeOnActivate: true,
+            onActivate: async () => {
+              const newBlock = await this.blocksAPI.convert(currentBlock.id, tool.name, toolboxItem.data);
 
-            this.caretAPI.setToBlock(newBlock, 'end');
-          },
-        });
+              this.caretAPI.setToBlock(newBlock, 'end');
+            },
+          });
+          uniqueTools.push(toolboxItem.title);
+        }
       });
 
       return result;

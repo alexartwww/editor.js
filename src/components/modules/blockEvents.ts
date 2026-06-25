@@ -406,6 +406,7 @@ export default class BlockEvents extends Module {
      * If current Block is empty, just remove it and set cursor to the previous Block (like we're removing line break char)
      */
     if (currentBlock.isEmpty) {
+
       BlockManager.removeBlock(currentBlock);
 
       const newCurrentBlock = BlockManager.currentBlock;

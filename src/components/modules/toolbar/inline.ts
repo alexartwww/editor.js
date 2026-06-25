@@ -105,6 +105,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     if (!this.opened) {
       return;
     }
+    console.log("inline close");
 
     for (const [tool, toolInstance] of this.tools) {
       const shortcut = this.getToolShortcut(tool.name);
@@ -148,6 +149,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
    * Removes UI and its components
    */
   public destroy(): void {
+    console.log("inline destroy");
     this.removeAllNodes();
     this.popover?.destroy();
     this.popover = null;
@@ -179,7 +181,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     if (this.opened) {
       return;
     }
-
+    console.log("inline open");
     /**
      * Show Inline Toolbar
      */
@@ -327,7 +329,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     if (!currentBlock) {
       return [];
     }
-
+    console.log("getTools", currentBlock.tool.inlineTools);
     const inlineTools = Array.from(currentBlock.tool.inlineTools.values());
 
     return inlineTools.filter((tool) => {
@@ -380,10 +382,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
 
       const shortcutBeautified = shortcut !== undefined ? _.beautifyShortcut(shortcut) : undefined;
 
-      const toolTitle = I18n.t(
-        I18nInternalNS.toolNames,
-        tool.title || _.capitalize(tool.name)
-      );
+      const toolTitle = I18n.t(I18nInternalNS.toolNames, tool.title || _.capitalize(tool.name));
 
       [ renderedTool ].flat().forEach((item) => {
         const commonPopoverItemParams = {
