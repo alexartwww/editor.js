@@ -5617,7 +5617,7 @@ class Cs extends E {
   close() {
     var e, t;
     if (this.opened) {
-      console.log("inline close");
+      console.log("inline close"), console.trace();
       for (const [o, i] of this.tools) {
         const s = this.getToolShortcut(o.name);
         s !== void 0 && ge.remove(this.Editor.UI.nodes.redactor, s), A(i.clear) && i.clear();
@@ -5638,7 +5638,7 @@ class Cs extends E {
    */
   destroy() {
     var e;
-    console.log("inline destroy"), this.removeAllNodes(), (e = this.popover) == null || e.destroy(), this.popover = null;
+    console.log("inline destroy"), console.trace(), this.removeAllNodes(), (e = this.popover) == null || e.destroy(), this.popover = null;
   }
   /**
    * Making DOM
@@ -5656,7 +5656,7 @@ class Cs extends E {
     var t;
     if (this.opened)
       return;
-    console.log("inline open"), this.opened = !0, this.popover !== null && this.popover.destroy(), this.createToolsInstances();
+    console.log("inline open"), console.trace(), this.opened = !0, this.popover !== null && this.popover.destroy(), this.createToolsInstances();
     const e = await this.getPopoverItems();
     this.popover = new hs({
       items: e,

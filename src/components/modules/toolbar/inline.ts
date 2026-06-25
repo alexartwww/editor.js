@@ -106,6 +106,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
       return;
     }
     console.log("inline close");
+    console.trace();
 
     for (const [tool, toolInstance] of this.tools) {
       const shortcut = this.getToolShortcut(tool.name);
@@ -150,6 +151,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
    */
   public destroy(): void {
     console.log("inline destroy");
+    console.trace();
     this.removeAllNodes();
     this.popover?.destroy();
     this.popover = null;
@@ -182,6 +184,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
       return;
     }
     console.log("inline open");
+    console.trace();
     /**
      * Show Inline Toolbar
      */
