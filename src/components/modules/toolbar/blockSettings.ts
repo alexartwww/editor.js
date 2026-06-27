@@ -219,23 +219,27 @@ export default class BlockSettings extends Module<BlockSettingsNodes> {
 
     const allBlockTools = Array.from(this.Editor.Tools.blockTools.values());
     const convertibleTools = await getConvertibleToolsForBlock(currentBlock, allBlockTools);
+    const uniqueTools = [];
     const convertToItems = convertibleTools.reduce((result, tool) => {
       tool.toolbox.forEach((toolboxItem) => {
-        result.push({
-          icon: toolboxItem.icon,
-          title: I18n.t(I18nInternalNS.toolNames, toolboxItem.title),
-          name: tool.name,
-          closeOnActivate: true,
-          onActivate: async () => {
-            const { BlockManager, Caret, Toolbar } = this.Editor;
+        if (uniqueTools.indexOf(toolboxItem.title) === -1) {
+          result.push({
+            icon: toolboxItem.icon,
+            title: I18n.t(I18nInternalNS.toolNames, toolboxItem.title),
+            name: tool.name,
+            closeOnActivate: true,
+            onActivate: async () => {
+              const {BlockManager, Caret, Toolbar} = this.Editor;
 
-            const newBlock = await BlockManager.convert(currentBlock, tool.name, toolboxItem.data);
+              const newBlock = await BlockManager.convert(currentBlock, tool.name, toolboxItem.data);
 
-            Toolbar.close();
+              Toolbar.close();
 
-            Caret.setToBlock(newBlock, Caret.positions.END);
-          },
-        });
+              Caret.setToBlock(newBlock, Caret.positions.END);
+            },
+          });
+          uniqueTools.push(toolboxItem.title);
+        }
       });
 
       return result;

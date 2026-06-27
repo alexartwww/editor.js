@@ -48,6 +48,7 @@ export function isSameBlockData(data1: BlockToolData, data2: BlockToolData): boo
  * @param allBlockTools - all block tools available in the editor
  */
 export async function getConvertibleToolsForBlock(block: BlockAPI, allBlockTools: BlockToolAdapter[]): Promise<BlockToolAdapter[]> {
+  debugger
   const savedData = await block.save() as SavedData;
   const blockData = savedData.data;
 

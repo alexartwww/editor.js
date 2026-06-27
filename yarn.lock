@@ -449,10 +449,10 @@
     codex-notifier "^1.1.2"
     codex-tooltip "^1.0.5"
 
-"@editorjs/header@alexartwww/header#70ea3a840a6692b03129d3eb0bce2443dcc5137f":
+"@editorjs/header@alexartwww/header#b0180c5e68c6f53df98ec21e376ec4412d1423a8":
   version "2.8.9999"
-  resolved "git+ssh://git@github.com/alexartwww/header.git#70ea3a840a6692b03129d3eb0bce2443dcc5137f"
-  integrity sha512-PXPmZRii4dSOR9i/ggxYwR4UK7+X8pRoqw+39h1iFRJfCKrRxUtECSQYzLwjRcNkmsZr//HRek5aU5dqYUaFJA==
+  resolved "git+ssh://git@github.com/alexartwww/header.git#b0180c5e68c6f53df98ec21e376ec4412d1423a8"
+  integrity sha512-rJUelVDzSewp0gOQVetApwX9vwyANjuqtWfC1DkXMIJ4l4jA2Zw3y5XWZoCyW6uTr8SY/UsPYljHckimhLMSFg==
   dependencies:
     "@codexteam/icons" "^0.0.5"
     "@editorjs/editorjs" "^2.30.7"
