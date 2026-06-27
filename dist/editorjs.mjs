@@ -5618,7 +5618,7 @@ class Cs extends E {
   close() {
     var e, t, o, i;
     if (this.opened) {
-      console.log("inline close"), console.trace(), (e = this.popover) == null || e.off(j.ChildrenOpened, this.handleChildrenOpened), (t = this.popover) == null || t.off(j.ChildrenClosed, this.handleChildrenClosed), this.isNestedPopoverOpen = !1;
+      (e = this.popover) == null || e.off(j.ChildrenOpened, this.handleChildrenOpened), (t = this.popover) == null || t.off(j.ChildrenClosed, this.handleChildrenClosed), this.isNestedPopoverOpen = !1;
       for (const [s, r] of this.tools) {
         const l = this.getToolShortcut(s.name);
         l !== void 0 && ge.remove(this.Editor.UI.nodes.redactor, l), A(r.clear) && r.clear();
@@ -5639,7 +5639,7 @@ class Cs extends E {
    */
   destroy() {
     var e;
-    console.log("inline destroy"), console.trace(), this.removeAllNodes(), (e = this.popover) == null || e.destroy(), this.popover = null;
+    this.removeAllNodes(), (e = this.popover) == null || e.destroy(), this.popover = null;
   }
   /**
    * Making DOM
@@ -5657,7 +5657,7 @@ class Cs extends E {
     var t;
     if (this.opened)
       return;
-    console.log("inline open"), console.trace(), this.opened = !0, this.popover !== null && this.popover.destroy(), this.createToolsInstances();
+    this.opened = !0, this.popover !== null && this.popover.destroy(), this.createToolsInstances();
     const e = await this.getPopoverItems();
     this.popover = new us({
       items: e,

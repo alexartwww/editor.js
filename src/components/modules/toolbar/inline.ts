@@ -128,8 +128,6 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     if (!this.opened) {
       return;
     }
-    console.log("inline close");
-    console.trace();
     this.popover?.off(PopoverEvent.ChildrenOpened, this.handleChildrenOpened);
     this.popover?.off(PopoverEvent.ChildrenClosed, this.handleChildrenClosed);
     this.isNestedPopoverOpen = false;
@@ -176,8 +174,6 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
    * Removes UI and its components
    */
   public destroy(): void {
-    console.log("inline destroy");
-    console.trace();
     this.removeAllNodes();
     this.popover?.destroy();
     this.popover = null;
@@ -209,8 +205,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     if (this.opened) {
       return;
     }
-    console.log("inline open");
-    console.trace();
+
     this.opened = true;
 
     if (this.popover !== null) {
