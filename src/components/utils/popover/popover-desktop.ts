@@ -244,6 +244,7 @@ export class PopoverDesktop extends PopoverAbstract {
     this.flipper?.activate(this.flippableElements);
 
     this.nestedPopoverTriggerItem?.onChildrenClose();
+    this.emit(PopoverEvent.ChildrenClosed);
   }
 
   /**
@@ -262,6 +263,7 @@ export class PopoverDesktop extends PopoverAbstract {
     });
 
     item.onChildrenOpen();
+    this.emit(PopoverEvent.ChildrenOpened);
 
     /**
      * Close nested popover when item with 'closeOnActivate' property set was clicked

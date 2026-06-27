@@ -13,6 +13,7 @@ import type { Popover, PopoverItemHtmlParams, PopoverItemParams, WithChildren } 
 import { PopoverItemType } from '../../utils/popover';
 import { PopoverInline } from '../../utils/popover/popover-inline';
 import type InlineToolAdapter from 'src/components/tools/inline';
+import {PopoverEvent} from '../../../../types/utils/popover/popover-event';
 
 /**
  * Inline Toolbar elements
@@ -56,6 +57,12 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
    * Currently visible tools instances
    */
   private tools: Map<InlineToolAdapter, IInlineTool> = new Map();
+  /**
+   * True while a nested (children) popover, e.g. "Convert to", is open.
+   * Prevents the toolbar from closing due to selection flicker caused by
+   * setFakeBackground()/restore() inside the nested popover's onOpen/onClose.
+   */
+  private isNestedPopoverOpen = false;
 
   /**
    * @param moduleConfiguration - Module Configuration
@@ -85,6 +92,10 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
    *                                  Avoid to use it just for closing IT, better call .close() clearly.
    */
   public async tryToShow(needToClose = false): Promise<void> {
+    if (this.isNestedPopoverOpen) {
+      return;
+    }
+
     if (needToClose) {
       this.close();
     }
@@ -99,14 +110,28 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
   }
 
   /**
-   * Hides Inline Toolbar
+   * Marks that a nested popover (e.g. "Convert to") is open,
+   * so selectionchange-driven tryToShow() calls don't close this toolbar
    */
+  private handleChildrenOpened = (): void => {
+    this.isNestedPopoverOpen = true;
+  };
+
+  /**
+   * Marks that the nested popover was closed
+   */
+  private handleChildrenClosed = (): void => {
+    this.isNestedPopoverOpen = false;
+  };
+
   public close(): void {
     if (!this.opened) {
       return;
     }
-    console.log("inline close");
-    console.trace();
+
+    this.popover?.off(PopoverEvent.ChildrenOpened, this.handleChildrenOpened);
+    this.popover?.off(PopoverEvent.ChildrenClosed, this.handleChildrenClosed);
+    this.isNestedPopoverOpen = false;
 
     for (const [tool, toolInstance] of this.tools) {
       const shortcut = this.getToolShortcut(tool.name);
@@ -183,11 +208,6 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     if (this.opened) {
       return;
     }
-    console.log("inline open");
-    console.trace();
-    /**
-     * Show Inline Toolbar
-     */
 
     this.opened = true;
 
@@ -207,6 +227,9 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
         search: I18n.ui(I18nInternalNS.ui.popover, 'Filter'),
       },
     });
+
+    this.popover.on(PopoverEvent.ChildrenOpened, this.handleChildrenOpened);
+    this.popover.on(PopoverEvent.ChildrenClosed, this.handleChildrenClosed);
 
     this.move(this.popover.size.width);
 

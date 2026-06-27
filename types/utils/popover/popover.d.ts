@@ -70,6 +70,16 @@ export interface PopoverEventMap {
    * Value is the item that was clicked
    */
   [PopoverEvent.ClosedOnActivate]: undefined;
+
+  /**
+   * When a nested (children) popover is opened for some item (e.g. "Convert to")
+   */
+  [PopoverEvent.ChildrenOpened]: undefined;
+
+  /**
+   * When a nested (children) popover is closed
+   */
+  [PopoverEvent.ChildrenClosed]: undefined;
 }
 
 /**
