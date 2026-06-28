@@ -236,14 +236,14 @@ function ti() {
 function He(n) {
   return n[0].toUpperCase() + n.slice(1);
 }
-function ht(n, ...e) {
+function ut(n, ...e) {
   if (!e.length)
     return n;
   const t = e.shift();
   if (D(n) && D(t))
     for (const o in t)
-      D(t[o]) ? (n[o] || Object.assign(n, { [o]: {} }), ht(n[o], t[o])) : Object.assign(n, { [o]: t[o] });
-  return ht(n, ...e);
+      D(t[o]) ? (n[o] || Object.assign(n, { [o]: {} }), ut(n[o], t[o])) : Object.assign(n, { [o]: t[o] });
+  return ut(n, ...e);
 }
 function vt(n) {
   const e = ti();
@@ -265,7 +265,7 @@ function ii(n) {
 function si(n = "") {
   return `${n}${Math.floor(Math.random() * 1e8).toString(16)}`;
 }
-function ut(n, e, t) {
+function ht(n, e, t) {
   const o = `«${e}» is deprecated and will be removed in the next major release. Please use the «${t}» instead.`;
   n && Y(o, "warn");
 }
@@ -767,14 +767,14 @@ const ci = {
   Link: "",
   Bold: "",
   Italic: ""
-}, hi = {
+}, ui = {
   link: {
     "Add a link": ""
   },
   stub: {
     "The block can not be displayed correctly.": ""
   }
-}, ui = {
+}, hi = {
   delete: {
     Delete: "",
     "Click to delete": ""
@@ -788,8 +788,8 @@ const ci = {
 }, Fo = {
   ui: ci,
   toolNames: di,
-  tools: hi,
-  blockTunes: ui
+  tools: ui,
+  blockTunes: hi
 }, Ho = class pe {
   /**
    * Type-safe translation for internal UI texts:
@@ -2227,7 +2227,7 @@ class gi extends E {
    * @deprecated Use BlockAPI interface to stretch Blocks
    */
   stretchBlock(e, t = !0) {
-    ut(
+    ht(
       !0,
       "blocks.stretchBlock()",
       "BlockAPI"
@@ -4265,7 +4265,7 @@ class as extends Oe {
     return o !== void 0 ? t.includes(o) : !1;
   }
 }
-var cs = Object.defineProperty, ds = Object.getOwnPropertyDescriptor, hs = (n, e, t, o) => {
+var cs = Object.defineProperty, ds = Object.getOwnPropertyDescriptor, us = (n, e, t, o) => {
   for (var i = o > 1 ? void 0 : o ? ds(e, t) : e, s = n.length - 1, r; s >= 0; s--)
     (r = n[s]) && (i = (o ? r(e, t, i) : r(i)) || i);
   return o && i && cs(e, t, i), i;
@@ -4453,11 +4453,11 @@ const en = class tn extends Jo {
     this.nodes.nothingFoundMessage.classList.toggle(P.nothingFoundMessageDisplayed, e);
   }
 };
-hs([
+us([
   me
 ], en.prototype, "size", 1);
 let Bt = en;
-class us extends Bt {
+class hs extends Bt {
   /**
    * Constructs the instance
    *
@@ -5154,18 +5154,18 @@ const Ct = class ln extends Oe {
     }), e;
   }
   get toolboxItemsToBeDisplayed() {
-    const e = (t, o, i = !0) => ({
-      icon: t.icon,
-      title: U.t(V.toolNames, t.title || He(o.name)),
-      name: o.name,
+    const e = (o, i, s = !0) => ({
+      icon: o.icon,
+      title: U.t(V.toolNames, o.title || He(i.name)),
+      name: i.name,
       onActivate: () => {
-        this.toolButtonActivated(o.name, t.data);
+        this.toolButtonActivated(i.name, o.data);
       },
-      secondaryLabel: o.shortcut && i ? vt(o.shortcut) : ""
-    });
-    return this.toolsToBeDisplayed.reduce((t, o) => (Array.isArray(o.toolbox) ? o.toolbox.forEach((i, s) => {
-      t.push(e(i, o, s === 0));
-    }) : o.toolbox !== void 0 && t.push(e(o.toolbox, o)), t), []);
+      secondaryLabel: i.shortcut && s ? vt(i.shortcut) : ""
+    }), t = [];
+    return this.toolsToBeDisplayed.reduce((o, i) => (Array.isArray(i.toolbox) ? i.toolbox.forEach((s, r) => {
+      t.indexOf(s.title) === -1 && (o.push(e(s, i, r === 0)), t.push(s.title));
+    }) : i.toolbox !== void 0 && o.push(e(i.toolbox, i)), o), []);
   }
   /**
    * Iterate all tools and enable theirs shortcuts if specified
@@ -5659,7 +5659,7 @@ class Cs extends E {
       return;
     this.opened = !0, this.popover !== null && this.popover.destroy(), this.createToolsInstances();
     const e = await this.getPopoverItems();
-    this.popover = new us({
+    this.popover = new hs({
       items: e,
       scopeElement: this.Editor.API.methods.ui.nodes.redactor,
       messages: {
@@ -5864,7 +5864,7 @@ function dn() {
   let e = n.focusNode, t = n.focusOffset;
   return e === null ? [null, 0] : (e.nodeType !== Node.TEXT_NODE && e.childNodes.length > 0 && (e.childNodes[t] ? (e = e.childNodes[t], t = 0) : (e = e.childNodes[t - 1], t = e.textContent.length)), [e, t]);
 }
-function hn(n, e, t, o) {
+function un(n, e, t, o) {
   const i = document.createRange();
   o === "left" ? (i.setStart(n, 0), i.setEnd(e, t)) : (i.setStart(e, t), i.setEnd(n, n.childNodes.length));
   const s = i.cloneContents(), r = document.createElement("div");
@@ -5881,7 +5881,7 @@ function Ne(n) {
   if (h.isEmpty(n))
     return !0;
   const [t, o] = dn();
-  return t === null ? !1 : hn(n, t, o, "left");
+  return t === null ? !1 : un(n, t, o, "left");
 }
 function Re(n) {
   const e = h.getDeepestNode(n, !0);
@@ -5890,9 +5890,9 @@ function Re(n) {
   if (h.isNativeInput(e))
     return e.selectionEnd === e.value.length;
   const [t, o] = dn();
-  return t === null ? !1 : hn(n, t, o, "right");
+  return t === null ? !1 : un(n, t, o, "right");
 }
-var un = {}, St = {}, Xe = {}, he = {}, It = {}, Ot = {};
+var hn = {}, St = {}, Xe = {}, ue = {}, It = {}, Ot = {};
 Object.defineProperty(Ot, "__esModule", { value: !0 });
 Ot.allInputsSelector = Ts;
 function Ts() {
@@ -5908,7 +5908,7 @@ function Ts() {
     return e.allInputsSelector;
   } });
 })(It);
-var ue = {}, _t = {};
+var he = {}, _t = {};
 Object.defineProperty(_t, "__esModule", { value: !0 });
 _t.isNativeInput = Ss;
 function Ss(n) {
@@ -5924,7 +5924,7 @@ function Ss(n) {
   Object.defineProperty(n, "isNativeInput", { enumerable: !0, get: function() {
     return e.isNativeInput;
   } });
-})(ue);
+})(he);
 var pn = {}, Mt = {};
 Object.defineProperty(Mt, "__esModule", { value: !0 });
 Mt.append = Is;
@@ -6022,7 +6022,7 @@ function Ms(n) {
 })(Rt);
 Object.defineProperty(Nt, "__esModule", { value: !0 });
 Nt.canSetCaret = Ps;
-var As = ue, Ls = Rt;
+var As = he, Ls = Rt;
 function Ps(n) {
   var e = !0;
   if ((0, As.isNativeInput)(n))
@@ -6291,7 +6291,7 @@ function lr(n) {
 var kn = {}, Ut = {};
 Object.defineProperty(Ut, "__esModule", { value: !0 });
 Ut.getContentLength = cr;
-var ar = ue;
+var ar = he;
 function cr(n) {
   var e, t;
   return (0, ar.isNativeInput)(n) ? n.value.length : n.nodeType === Node.TEXT_NODE ? n.length : (t = (e = n.textContent) === null || e === void 0 ? void 0 : e.length) !== null && t !== void 0 ? t : 0;
@@ -6326,8 +6326,8 @@ function yn(n) {
 })(Wt);
 var wn = {}, Kt = {}, Ze = {}, Xt = {};
 Object.defineProperty(Xt, "__esModule", { value: !0 });
-Xt.isLineBreakTag = hr;
-function hr(n) {
+Xt.isLineBreakTag = ur;
+function ur(n) {
   return [
     "BR",
     "WBR"
@@ -6342,8 +6342,8 @@ function hr(n) {
 })(Ze);
 var Ge = {}, Vt = {};
 Object.defineProperty(Vt, "__esModule", { value: !0 });
-Vt.isSingleTag = ur;
-function ur(n) {
+Vt.isSingleTag = hr;
+function hr(n) {
   return [
     "AREA",
     "BASE",
@@ -6372,7 +6372,7 @@ function ur(n) {
 })(Ge);
 Object.defineProperty(Kt, "__esModule", { value: !0 });
 Kt.getDeepestNode = En;
-var pr = ue, fr = Ze, gr = Ge;
+var pr = he, fr = Ze, gr = Ge;
 function En(n, e) {
   e === void 0 && (e = !1);
   var t = e ? "lastChild" : "firstChild", o = e ? "previousSibling" : "nextSibling";
@@ -6404,7 +6404,7 @@ var xn = {}, qt = {}, Me = Ce && Ce.__spreadArray || function(n, e, t) {
 };
 Object.defineProperty(qt, "__esModule", { value: !0 });
 qt.findAllInputs = yr;
-var mr = Ve, br = Wt, vr = It, kr = ue;
+var mr = Ve, br = Wt, vr = It, kr = he;
 function yr(n) {
   return Array.from(n.querySelectorAll((0, vr.allInputsSelector)())).reduce(function(e, t) {
     return (0, kr.isNativeInput)(t) || (0, mr.containsOnlyInlineElements)(t) ? Me(Me([], e, !0), [t], !1) : Me(Me([], e, !0), (0, br.getDeepestBlockElements)(t), !0);
@@ -6460,7 +6460,7 @@ function Br(n) {
 var oo = {}, no = {};
 Object.defineProperty(no, "__esModule", { value: !0 });
 no.isNodeEmpty = Or;
-var Cr = Ze, Tr = Gt, Sr = ue, Ir = Ge;
+var Cr = Ze, Tr = Gt, Sr = he, Ir = Ge;
 function Or(n, e) {
   var t = "";
   return (0, Ir.isSingleTag)(n) && !(0, Cr.isLineBreakTag)(n) ? !1 : ((0, Tr.isElement)(n) && (0, Sr.isNativeInput)(n) ? t = n.value : n.textContent !== null && (t = n.textContent.replace("​", "")), e !== void 0 && (t = t.replace(new RegExp(e, "g"), "")), t.trim().length === 0);
@@ -6563,7 +6563,7 @@ function Fr(n, e) {
   Object.defineProperty(n, "allInputsSelector", { enumerable: !0, get: function() {
     return e.allInputsSelector;
   } });
-  var t = ue;
+  var t = he;
   Object.defineProperty(n, "isNativeInput", { enumerable: !0, get: function() {
     return t.isNativeInput;
   } });
@@ -6659,11 +6659,11 @@ function Fr(n, e) {
   Object.defineProperty(n, "prepend", { enumerable: !0, get: function() {
     return m.prepend;
   } });
-})(he);
+})(ue);
 var Qe = {};
 Object.defineProperty(Qe, "__esModule", { value: !0 });
 Qe.getContenteditableSlice = jr;
-var Hr = he;
+var Hr = ue;
 function jr(n, e, t, o, i) {
   var s;
   i === void 0 && (i = !1);
@@ -6679,7 +6679,7 @@ function jr(n, e, t, o, i) {
 }
 Object.defineProperty(Xe, "__esModule", { value: !0 });
 Xe.checkContenteditableSliceForEmptiness = Ur;
-var $r = he, zr = Qe;
+var $r = ue, zr = Qe;
 function Ur(n, e, t, o) {
   var i = (0, zr.getContenteditableSlice)(n, e, t, o);
   return (0, $r.isCollapsedWhitespaces)(i);
@@ -6702,7 +6702,7 @@ var _n = {};
 var Mn = {}, ao = {};
 Object.defineProperty(ao, "__esModule", { value: !0 });
 ao.focus = Yr;
-var Wr = he;
+var Wr = ue;
 function Yr(n, e) {
   var t, o;
   if (e === void 0 && (e = !0), (0, Wr.isNativeInput)(n)) {
@@ -6770,10 +6770,10 @@ function Xr() {
     return e.getRange;
   } });
 })(An);
-var Ln = {}, ho = {};
-Object.defineProperty(ho, "__esModule", { value: !0 });
-ho.isCaretAtEndOfInput = Zr;
-var Oo = he, Vr = co, qr = St;
+var Ln = {}, uo = {};
+Object.defineProperty(uo, "__esModule", { value: !0 });
+uo.isCaretAtEndOfInput = Zr;
+var Oo = ue, Vr = co, qr = St;
 function Zr(n) {
   var e = (0, Oo.getDeepestNode)(n, !0);
   if (e === null)
@@ -6785,15 +6785,15 @@ function Zr(n) {
 }
 (function(n) {
   Object.defineProperty(n, "__esModule", { value: !0 }), n.isCaretAtEndOfInput = void 0;
-  var e = ho;
+  var e = uo;
   Object.defineProperty(n, "isCaretAtEndOfInput", { enumerable: !0, get: function() {
     return e.isCaretAtEndOfInput;
   } });
 })(Ln);
-var Pn = {}, uo = {};
-Object.defineProperty(uo, "__esModule", { value: !0 });
-uo.isCaretAtStartOfInput = Jr;
-var Ae = he, Gr = Je, Qr = Xe;
+var Pn = {}, ho = {};
+Object.defineProperty(ho, "__esModule", { value: !0 });
+ho.isCaretAtStartOfInput = Jr;
+var Ae = ue, Gr = Je, Qr = Xe;
 function Jr(n) {
   var e = (0, Ae.getDeepestNode)(n);
   if (e === null || (0, Ae.isEmpty)(n))
@@ -6807,7 +6807,7 @@ function Jr(n) {
 }
 (function(n) {
   Object.defineProperty(n, "__esModule", { value: !0 }), n.isCaretAtStartOfInput = void 0;
-  var e = uo;
+  var e = ho;
   Object.defineProperty(n, "isCaretAtStartOfInput", { enumerable: !0, get: function() {
     return e.isCaretAtStartOfInput;
   } });
@@ -6815,7 +6815,7 @@ function Jr(n) {
 var Nn = {}, po = {};
 Object.defineProperty(po, "__esModule", { value: !0 });
 po.save = ol;
-var el = he, tl = et;
+var el = ue, tl = et;
 function ol() {
   var n = (0, tl.getRange)(), e = (0, el.make)("span");
   if (e.id = "cursor", e.hidden = !0, !!n)
@@ -6867,7 +6867,7 @@ function ol() {
   Object.defineProperty(n, "save", { enumerable: !0, get: function() {
     return a.save;
   } });
-})(un);
+})(hn);
 class nl extends E {
   /**
    * All keydowns on Block
@@ -6877,7 +6877,7 @@ class nl extends E {
   keydown(e) {
     switch (this.beforeKeydownProcessing(e), e.keyCode) {
       case y.BACKSPACE:
-        this.backspace(e);
+        this.backspace(e), e.defaultPrevented || this.cleanupStrayBrAfterNativeBackspace();
         break;
       case y.DELETE:
         this.delete(e);
@@ -6898,6 +6898,20 @@ class nl extends E {
         break;
     }
     e.key === "/" && !e.ctrlKey && !e.metaKey && this.slashPressed(e), e.code === "Slash" && (e.ctrlKey || e.metaKey) && (e.preventDefault(), this.commandSlashPressed());
+  }
+  /**
+   * Browsers sometimes leave a single <br> in a contenteditable element
+   * after the user backspaces all the way to empty. This removes it
+   * so the block is treated as truly empty.
+   */
+  cleanupStrayBrAfterNativeBackspace() {
+    const { currentBlock: e } = this.Editor.BlockManager;
+    if (e === void 0 || !e.currentInput)
+      return;
+    const t = e.currentInput;
+    setTimeout(() => {
+      t.innerHTML.trim() === "<br>" && (t.innerHTML = "");
+    }, 0);
   }
   /**
    * Fires on keydown before event processing
@@ -7000,7 +7014,7 @@ class nl extends E {
    * @param {KeyboardEvent} event - keydown
    */
   backspace(e) {
-    var a;
+    var a, c, d;
     const { BlockManager: t, Caret: o } = this.Editor, { currentBlock: i, previousBlock: s } = t;
     if (((a = s == null ? void 0 : s.settings) == null ? void 0 : a.holdFirstHeader) === !0 || i === void 0 || !b.isCollapsed || !i.currentInput || !Ne(i.currentInput))
       return;
@@ -7015,12 +7029,20 @@ class nl extends E {
       return;
     }
     if (i.isEmpty) {
+      if (((c = i.settings) == null ? void 0 : c.holdOnLastBackspace) === !0)
+        return;
       t.removeBlock(i);
-      const c = t.currentBlock;
-      o.setToBlock(c, o.positions.END);
+      const u = t.currentBlock;
+      o.setToBlock(u, o.positions.END);
       return;
     }
-    xo(s, i) ? this.mergeBlocks(s, i) : o.setToBlock(s, o.positions.END);
+    if (xo(s, i))
+      this.mergeBlocks(s, i);
+    else {
+      if (((d = i.settings) == null ? void 0 : d.holdOnLastBackspace) === !0)
+        return;
+      o.setToBlock(s, o.positions.END);
+    }
   }
   /**
    * Handles delete keydown on Block
@@ -7057,7 +7079,7 @@ class nl extends E {
    */
   mergeBlocks(e, t) {
     const { BlockManager: o, Toolbar: i } = this.Editor;
-    e.lastInput !== void 0 && (un.focus(e.lastInput, !1), o.mergeBlocks(e, t).then(() => {
+    e.lastInput !== void 0 && (hn.focus(e.lastInput, !1), o.mergeBlocks(e, t).then(() => {
       i.close();
     }));
   }
@@ -8558,8 +8580,8 @@ class cl extends E {
     e.preventDefault();
   }
 }
-const dl = 180, hl = 400;
-class ul extends E {
+const dl = 180, ul = 400;
+class hl extends E {
   /**
    * Prepare the module
    *
@@ -8571,7 +8593,7 @@ class ul extends E {
     super({
       config: e,
       eventsDispatcher: t
-    }), this.disabled = !1, this.batchingTimeout = null, this.batchingOnChangeQueue = /* @__PURE__ */ new Map(), this.batchTime = hl, this.mutationObserver = new MutationObserver((o) => {
+    }), this.disabled = !1, this.batchingTimeout = null, this.batchingOnChangeQueue = /* @__PURE__ */ new Map(), this.batchTime = ul, this.mutationObserver = new MutationObserver((o) => {
       this.redactorChanged(o);
     }), this.eventsDispatcher.on($o, (o) => {
       this.particularBlockChanged(o.event);
@@ -10449,7 +10471,7 @@ class Wn extends E {
    * @returns {Promise<void>}
    */
   async prepare() {
-    if (this.validateTools(), this.config.tools = ht({}, this.internalTools, this.config.tools), !Object.prototype.hasOwnProperty.call(this.config, "tools") || Object.keys(this.config.tools).length === 0)
+    if (this.validateTools(), this.config.tools = ut({}, this.internalTools, this.config.tools), !Object.prototype.hasOwnProperty.call(this.config, "tools") || Object.keys(this.config.tools).length === 0)
       throw Error("Can't start without tools");
     const e = this.prepareConfig();
     this.factory = new xl(e, this.config, this.Editor.API);
@@ -11056,7 +11078,7 @@ const Ol = {
   Caret: Ye,
   CrossBlockSelection: al,
   DragNDrop: cl,
-  ModificationsObserver: ul,
+  ModificationsObserver: hl,
   Paste: pl,
   ReadOnly: fl,
   RectangleSelection: Be,
@@ -11093,7 +11115,7 @@ class _l {
       ...e
     } : this.config = {
       holder: e
-    }, ut(!!this.config.holderId, "config.holderId", "config.holder"), this.config.holderId && !this.config.holder && (this.config.holder = this.config.holderId, this.config.holderId = null), this.config.holder == null && (this.config.holder = "editorjs"), this.config.logLevel || (this.config.logLevel = Lo.VERBOSE), Zn(this.config.logLevel), ut(!!this.config.initialBlock, "config.initialBlock", "config.defaultBlock"), this.config.defaultBlock = this.config.defaultBlock || this.config.initialBlock || "paragraph", this.config.minHeight = this.config.minHeight !== void 0 ? this.config.minHeight : 300;
+    }, ht(!!this.config.holderId, "config.holderId", "config.holder"), this.config.holderId && !this.config.holder && (this.config.holder = this.config.holderId, this.config.holderId = null), this.config.holder == null && (this.config.holder = "editorjs"), this.config.logLevel || (this.config.logLevel = Lo.VERBOSE), Zn(this.config.logLevel), ht(!!this.config.initialBlock, "config.initialBlock", "config.defaultBlock"), this.config.defaultBlock = this.config.defaultBlock || this.config.initialBlock || "paragraph", this.config.minHeight = this.config.minHeight !== void 0 ? this.config.minHeight : 300;
     const t = {
       type: this.config.defaultBlock,
       data: {}
