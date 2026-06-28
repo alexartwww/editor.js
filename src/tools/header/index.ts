@@ -7,6 +7,7 @@ import { IconH1, IconH2, IconH3, IconH4, IconH5, IconH6, IconHeading } from '@co
 import { API, BlockTool, PasteEvent } from '@editorjs/editorjs';
 import type { MenuConfig } from '@editorjs/editorjs/types/tools';
 import {ConversionConfig, SanitizerConfig} from "@/types";
+import I18n from "../../components/i18n";
 
 /**
  * @description Tool's input and output data format
@@ -438,7 +439,56 @@ export default class Header implements BlockTool {
     } else {
       tag.dataset['placeholder'] = this.api.i18n.t(this._config?.placeholderLevel || '');
     }
+    // Ограничение максимальной длины заголовка
+    const maxLength = (currentLevel.number === 1) ? this._config?.maxLength : this._config?.maxLengthLevel;
+    if (maxLength) {
+      tag.addEventListener('beforeinput', (e: InputEvent) => {
+        const currentLength = tag.textContent?.length || 0;
 
+        // Разрешаем удаление и навигацию всегда
+        const isDeletion = e.inputType.startsWith('delete');
+        if (isDeletion) {
+          return;
+        }
+
+        // Если уже достигли лимита — блокируем ввод нового текста
+        if (currentLength >= maxLength) {
+          e.preventDefault();
+        }
+      });
+
+      // Защита от вставки длинного текста через paste
+      tag.addEventListener('paste', (e: ClipboardEvent) => {
+        e.preventDefault();
+
+        const pasteText = e.clipboardData?.getData('text/plain') || '';
+        const currentLength = tag.textContent?.length || 0;
+        const allowedLength = maxLength - currentLength;
+
+        if (allowedLength <= 0) {
+          return;
+        }
+
+        const textToInsert = pasteText.slice(0, allowedLength);
+
+        const selection = window.getSelection();
+        if (!selection || selection.rangeCount === 0) {
+          return;
+        }
+
+        const range = selection.getRangeAt(0);
+        range.deleteContents();
+
+        const textNode = document.createTextNode(textToInsert);
+        range.insertNode(textNode);
+
+        // переносим каретку в конец вставленного текста
+        range.setStartAfter(textNode);
+        range.setEndAfter(textNode);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      });
+    }
     // H1: блокируем Backspace в начале (чтобы не слить с предыдущим блоком)
     // и Enter (чтобы не создавал новую строку внутри H1)
     if (this._config.holdFirstHeader === true && this._data.level === 1) {
@@ -618,17 +668,17 @@ export default class Header implements BlockTool {
     return [
       // {
       //   icon: IconH1,
-      //   title: 'Heading 1',
+      //   title: I18n.t('tools.header', 'Heading 1'),
       //   data: { level: 1 },
       // },
       {
         icon: IconH2,
-        title: 'Heading 2',
+        title: I18n.t('tools.header', 'Heading 2'),
         data: { level: 2 },
       },
       {
         icon: IconH3,
-        title: 'Heading 3',
+        title: I18n.t('tools.header', 'Heading 3'),
         data: { level: 3 },
       },
     ];

@@ -135,7 +135,7 @@
        */
       // inlineToolbar: ['link', 'marker', 'bold', 'italic'],
       // inlineToolbar: true,
-      placeholder: 'Напишите ваши мысли...',
+      placeholder: 'Введите текст или нажмите “/” для вызова меню',
       autofocus: true,
 
       /**
@@ -149,11 +149,13 @@
           class: Header,
           inlineToolbar: ['link', 'marker'],
           config: {
-            placeholder: 'Ваш заголовок',
-            placeholderLevel: 'Ваш подзаголовок',
+            placeholder: 'Заголовок',
+            placeholderLevel: 'Подзаголовок',
             levels: [1, 2, 3],
             defaultLevel: 1,
             holdFirstHeader: true,
+            maxLength: 150,
+            maxLengthLevel: 200,
           },
           shortcut: 'CMD+SHIFT+H'
         },
@@ -179,7 +181,8 @@
           inlineToolbar: true,
           config: {
             quotePlaceholder: 'Enter a quote',
-            captionPlaceholder: 'Quote\'s author',
+            captionPlaceholder: 'Enter a caption',
+            holdOnLastBackspace: true,
           },
           shortcut: 'CMD+SHIFT+O'
         },
@@ -279,6 +282,166 @@
       },
       onChange: function(api, event) {
         console.log('something changed', event);
+      },
+
+      i18n: {
+        /**
+         * @type {I18nDictionary}
+         */
+        messages: {
+          /**
+           * Other below: translation of different UI components of the editor.js core
+           */
+          ui: {
+            blockTunes: {
+              toggler: {
+                'Click to tune': 'Нажмите, чтобы настроить',
+                'or drag to move': 'или перетащите',
+              },
+            },
+            inlineToolbar: {
+              converter: {
+                'Convert to': 'Конвертировать в',
+              },
+            },
+            toolbar: {
+              toolbox: {
+                Add: 'Добавить',
+              },
+            },
+            popover: {
+              Filter: 'Фильтр',
+              'Nothing found': 'Не найдено',
+              'Convert to': 'Конвертировать в',
+            },
+          },
+
+          /**
+           * Section for translation Tool Names: both block and inline tools
+           */
+          toolNames: {
+            Text: 'Параграф',
+            Heading: 'Заголовок',
+            List: 'Список',
+            Warning: 'Примечание',
+            Checklist: 'Чеклист',
+            'Unordered List': 'Список',
+            'Ordered List': 'Нум. Список',
+            Images: 'Фотографии',
+            Buttons: 'Кнопки',
+            Video: 'Видео',
+            Cut: 'Линия отреза',
+            Quote: 'Цитата',
+            Code: 'Код',
+            Delimiter: 'Разделитель',
+            'Raw HTML': 'HTML-фрагмент',
+            Table: 'Таблица',
+            Link: 'Ссылка',
+            Marker: 'Маркер',
+            Bold: 'Полужирный',
+            Italic: 'Курсив',
+            InlineCode: 'Моноширинный',
+          },
+
+          /**
+           * Section for passing translations to the external tools classes
+           */
+          tools: {
+            /**
+             * Each subsection is the i18n dictionary that will be passed to the corresponded plugin
+             * The name of a plugin should be equal the name you specify in the 'tool' section for that plugin
+             */
+            warning: {
+              // <-- 'Warning' tool will accept this dictionary section
+              Title: 'Название',
+              Message: 'Сообщение',
+            },
+
+            /**
+             * Link is the internal Inline Tool
+             */
+            link: {
+              'Add a link': 'Вставьте ссылку',
+            },
+            /**
+             * The "stub" is an internal block tool, used to fit blocks that does not have the corresponded plugin
+             */
+            stub: {
+              'The block can not be displayed correctly.': 'Блок не может быть отображен',
+            },
+            list: {
+              'Ordered': 'Нум. Список',
+              'Unordered': 'Список',
+              'Checklist': 'Чеклист',
+              'Start with': 'Начать с',
+              'Counter type': 'Тип нумерации',
+              'Numeric': 'Нумерованный',
+              'Lower Roman': 'Римские строчные',
+              'Upper Roman': 'Римские заглавные',
+              'Lower Alpha': 'Латинские строчные',
+              'Upper Alpha': 'Латинские заглавные',
+            },
+            quote: {
+              'Enter a quote': 'Введите цитату',
+              'Enter a caption': 'Введите подпись',
+            },
+            header: {
+              'Heading 1': 'Заголовок 1',
+              'Heading 2': 'Заголовок 2',
+              'Heading 3': 'Заголовок 3',
+              'Heading 4': 'Заголовок 4',
+              'Heading 5': 'Заголовок 5',
+              'Heading 6': 'Заголовок 6',
+            },
+            table: {
+              'Add column to left': 'Добавить колонку слева',
+              'Add column to right': 'Добавить колонку справа',
+              'Delete column': 'Удалить колонку',
+              'Add row above': 'Добавить строку выше',
+              'Add row below': 'Добавить строку ниже',
+              'Delete row': 'Удалить строку',
+              Heading: 'Заголовок',
+              'With headings': 'С заголовком',
+            },
+            xvideo: {
+              'Video has not been selected': 'Видео не было выбрано',
+              'Select video': 'Указать URL видео(Rutube, VK, Vimeo, YouTube)',
+              Caption: 'Подпись к видео',
+            },
+            ximages: {
+              'Files has not been selected': 'Файлы не были выбраны',
+              'Add files from your device': 'Добавьте файлы со своего устройства',
+              'Select files': 'Выбрать файлы',
+              'Caption for image': 'Подпись к изображению',
+              'Caption for images': 'Подпись к изображениям',
+            },
+            xbuttons: {
+              Buttons: 'Кнопки',
+            },
+          },
+
+          /**
+           * Section allows to translate Block Tunes
+           */
+          blockTunes: {
+            /**
+             * Each subsection is the i18n dictionary that will be passed to the corresponded Block Tune plugin
+             * The name of a plugin should be equal the name you specify in the 'tunes' section for that plugin
+             *
+             * Also, there are few internal block tunes: "delete", "moveUp" and "moveDown"
+             */
+            delete: {
+              Delete: 'Удалить',
+              'Click to delete': 'Уверены?',
+            },
+            moveUp: {
+              'Move up': 'Переместить вверх',
+            },
+            moveDown: {
+              'Move down': 'Переместить вниз',
+            },
+          },
+        },
       },
     }
     /**

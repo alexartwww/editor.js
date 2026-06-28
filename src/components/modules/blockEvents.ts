@@ -31,6 +31,9 @@ export default class BlockEvents extends Module {
     switch (event.keyCode) {
       case _.keyCodes.BACKSPACE:
         this.backspace(event);
+        if (!event.defaultPrevented) {
+          this.cleanupStrayBrAfterNativeBackspace();
+        }
         break;
 
       case _.keyCodes.DELETE:
@@ -73,6 +76,28 @@ export default class BlockEvents extends Module {
       event.preventDefault();
       this.commandSlashPressed();
     }
+  }
+
+  /**
+   * Browsers sometimes leave a single <br> in a contenteditable element
+   * after the user backspaces all the way to empty. This removes it
+   * so the block is treated as truly empty.
+   */
+  private cleanupStrayBrAfterNativeBackspace(): void {
+    const { currentBlock } = this.Editor.BlockManager;
+
+    if (currentBlock === undefined || !currentBlock.currentInput) {
+      return;
+    }
+
+    const input = currentBlock.currentInput;
+
+    // ждём, пока браузер фактически выполнит удаление
+    setTimeout(() => {
+      if (input.innerHTML.trim() === '<br>') {
+        input.innerHTML = '';
+      }
+    }, 0);
   }
 
   /**
@@ -406,7 +431,9 @@ export default class BlockEvents extends Module {
      * If current Block is empty, just remove it and set cursor to the previous Block (like we're removing line break char)
      */
     if (currentBlock.isEmpty) {
-
+      if (currentBlock.settings?.holdOnLastBackspace === true) {
+        return;
+      }
       BlockManager.removeBlock(currentBlock);
 
       const newCurrentBlock = BlockManager.currentBlock;
@@ -425,6 +452,9 @@ export default class BlockEvents extends Module {
     if (bothBlocksMergeable) {
       this.mergeBlocks(previousBlock, currentBlock);
     } else {
+      if (currentBlock.settings?.holdOnLastBackspace === true) {
+        return;
+      }
       Caret.setToBlock(previousBlock, Caret.positions.END);
     }
   }

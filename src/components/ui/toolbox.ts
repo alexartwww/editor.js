@@ -324,14 +324,17 @@ export default class Toolbox extends EventsDispatcher<ToolboxEventMap> {
         secondaryLabel: (tool.shortcut && displaySecondaryLabel) ? _.beautifyShortcut(tool.shortcut) : '',
       };
     };
-
+    const uniqueTools = [];
     return this.toolsToBeDisplayed
       .reduce<PopoverItemParams[]>((result, tool) => {
         if (Array.isArray(tool.toolbox)) {
           tool.toolbox.forEach((item, index) => {
-            result.push(toPopoverItem(item, tool, index === 0));
+            if (uniqueTools.indexOf(item.title) === -1) {
+              result.push(toPopoverItem(item, tool, index === 0));
+              uniqueTools.push(item.title);
+            }
           });
-        } else if (tool.toolbox !== undefined)  {
+        } else if (tool.toolbox !== undefined) {
           result.push(toPopoverItem(tool.toolbox, tool));
         }
 

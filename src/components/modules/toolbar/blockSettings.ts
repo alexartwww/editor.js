@@ -209,7 +209,6 @@ export default class BlockSettings extends Module<BlockSettingsNodes> {
    */
   private async getTunesItems(currentBlock: Block, commonTunes: MenuConfigItem[], toolTunes?: MenuConfigItem[]): Promise<PopoverItemParams[]> {
     const items = [] as MenuConfigItem[];
-
     if (toolTunes !== undefined && toolTunes.length > 0) {
       items.push(...toolTunes);
       items.push({

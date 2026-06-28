@@ -170,7 +170,6 @@ export default class Quote implements BlockTool {
    * @param params.readOnly - read only mode flag
    */
   constructor({ data, config, api, readOnly, block }: QuoteParams) {
-    console.log('Quote Artem Aleksashkin version 2');
     const { DEFAULT_ALIGNMENT } = Quote;
 
     this.api = api;
