@@ -438,74 +438,45 @@ export default class Header implements BlockTool {
     } else {
       tag.dataset['placeholder'] = this.api.i18n.t(this._config?.placeholderLevel || '');
     }
-
     // Ограничение максимальной длины заголовка
     const maxLength = (currentLevel.number === 1) ? this._config?.maxLength : this._config?.maxLengthLevel;
-    if (maxLength && !this.readOnly) {
-
-      // Перехватываем paste на уровне нативного события — здесь clipboardData точно есть
+    if (maxLength) {
+      // Защита от вставки длинного текста через paste
       tag.addEventListener('paste', (e: ClipboardEvent) => {
-        e.preventDefault(); // всегда блокируем нативную вставку
+        const pasteHtml = e.clipboardData?.getData('text/html') || '';
 
+        // HTML с заголовками — отдаём EditorJS
+        if (/<h[1-6]/i.test(pasteHtml)) {
+          return;
+        }
+
+        // Обычный текст — проверяем лимит
         const pasteText = e.clipboardData?.getData('text/plain') || '';
+        const currentLength = tag.textContent?.length || 0;
+        const allowedLength = maxLength - currentLength;
 
+        e.preventDefault(); // блокируем только если сами обрабатываем
+
+        if (allowedLength <= 0) {
+          return;
+        }
+
+        const textToInsert = pasteText.slice(0, allowedLength);
         const selection = window.getSelection();
-        const selectedLength = selection && !selection.isCollapsed
-          ? selection.toString().length
-          : 0;
-        const currentLength = (tag.textContent?.length || 0) - selectedLength;
-        const availableSpace = Math.max(0, maxLength - currentLength);
-
-        if (availableSpace <= 0) {
+        if (!selection || selection.rangeCount === 0) {
           return;
         }
 
-        const textToInsert = pasteText.slice(0, availableSpace);
-        if (!textToInsert) {
-          return;
-        }
-
-        const range = selection?.getRangeAt(0);
-        if (!range) {
-          return;
-        }
-
+        const range = selection.getRangeAt(0);
         range.deleteContents();
+
         const textNode = document.createTextNode(textToInsert);
         range.insertNode(textNode);
+
         range.setStartAfter(textNode);
         range.setEndAfter(textNode);
-        selection?.removeAllRanges();
-        selection?.addRange(range);
-      });
-
-      // beforeinput только для обычного ввода (не paste — он уже обработан выше)
-      tag.addEventListener('beforeinput', (e: InputEvent) => {
-        if (e.inputType.startsWith('delete')) {
-          return;
-        }
-
-        // paste обрабатывается отдельным listener выше
-        if (e.inputType === 'insertFromPaste') {
-          return;
-        }
-
-        const selection = window.getSelection();
-        const selectedLength = selection && !selection.isCollapsed
-          ? selection.toString().length
-          : 0;
-        const currentLength = (tag.textContent?.length || 0) - selectedLength;
-        const availableSpace = maxLength - currentLength;
-
-        if (availableSpace <= 0) {
-          e.preventDefault();
-          return;
-        }
-
-        const insertText = e.data || '';
-        if (insertText.length > availableSpace) {
-          e.preventDefault();
-        }
+        selection.removeAllRanges();
+        selection.addRange(range);
       });
     }
     // H1: блокируем Backspace в начале (чтобы не слить с предыдущим блоком)
