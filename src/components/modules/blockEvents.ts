@@ -38,6 +38,9 @@ export default class BlockEvents extends Module {
 
       case _.keyCodes.DELETE:
         this.delete(event);
+        if (!event.defaultPrevented) {
+          this.cleanupStrayBrAfterNativeBackspace();
+        }
         break;
 
       case _.keyCodes.ENTER:
@@ -469,6 +472,10 @@ export default class BlockEvents extends Module {
   private delete(event: KeyboardEvent): void {
     const { BlockManager, Caret } = this.Editor;
     const { currentBlock, nextBlock } = BlockManager;
+
+    if (currentBlock?.settings?.holdFirstHeader === true) {
+      return;
+    }
 
     /**
      * If some fragment is selected, leave native behaviour

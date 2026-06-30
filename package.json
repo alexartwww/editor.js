@@ -19,7 +19,7 @@
     "build:test": "vite build --mode test",
     "lint": "eslint src/ --ext .ts && yarn lint:tests",
     "lint:errors": "eslint src/ --ext .ts --quiet",
-    "lint:fix": "eslint src/ --ext .ts --fix",
+    "lint:fix":                                    "eslint src/ --ext .ts --fix",
     "lint:tests": "eslint test/ --ext .ts",
     "test:e2e": "yarn build:test && cypress run",
     "test:e2e:open": "yarn build:test && cypress open"
@@ -37,7 +37,7 @@
     "@cypress/code-coverage": "^3.10.3",
     "@editorjs/code": "^2.7.0",
     "@editorjs/delimiter": "^1.2.0",
-    "@editorjs/header": "alexartwww/header#1d8ee89f7daffec38315ca79e28d2393d716eb77",
+    "@editorjs/header": "alexartwww/header#af474d2716c5d28d3f12abda185eaeb51c5e442d",
     "@editorjs/paragraph": "alexartwww/paragraph#a62fbf580b0f65dac50bf5d61131f8298715e2c3",
     "@editorjs/simple-image": "^1.4.1",
     "@types/node": "^18.15.11",

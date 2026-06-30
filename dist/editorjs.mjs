@@ -5712,7 +5712,7 @@ class Cs extends E {
    */
   getTools() {
     const e = this.Editor.BlockManager.currentBlock;
-    return e ? (console.log("getTools", e.tool.inlineTools), Array.from(e.tool.inlineTools.values()).filter((o) => !(this.Editor.ReadOnly.isEnabled && o.isReadOnlySupported !== !0))) : [];
+    return e ? Array.from(e.tool.inlineTools.values()).filter((o) => !(this.Editor.ReadOnly.isEnabled && o.isReadOnlySupported !== !0)) : [];
   }
   /**
    * Constructs tools instances and saves them to this.tools
@@ -6880,7 +6880,7 @@ class nl extends E {
         this.backspace(e), e.defaultPrevented || this.cleanupStrayBrAfterNativeBackspace();
         break;
       case y.DELETE:
-        this.delete(e);
+        this.delete(e), e.defaultPrevented || this.cleanupStrayBrAfterNativeBackspace();
         break;
       case y.ENTER:
         this.enter(e);
@@ -7052,8 +7052,9 @@ class nl extends E {
    * @param {KeyboardEvent} event - keydown
    */
   delete(e) {
+    var a;
     const { BlockManager: t, Caret: o } = this.Editor, { currentBlock: i, nextBlock: s } = t;
-    if (!b.isCollapsed || !Re(i.currentInput))
+    if (((a = i == null ? void 0 : i.settings) == null ? void 0 : a.holdFirstHeader) === !0 || !b.isCollapsed || !Re(i.currentInput))
       return;
     if (e.preventDefault(), this.Editor.Toolbar.close(), !(i.currentInput === i.lastInput)) {
       o.navigateNext();
@@ -11244,7 +11245,6 @@ class Al {
    * @param {EditorConfig|string|undefined} [configuration] - user configuration
    */
   constructor(e) {
-    console.log("Editor.js Artem Aleksashkin version 2");
     let t = () => {
     };
     D(e) && A(e.onReady) && (t = e.onReady);

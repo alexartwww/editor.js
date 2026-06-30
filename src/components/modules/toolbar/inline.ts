@@ -352,7 +352,6 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     if (!currentBlock) {
       return [];
     }
-    console.log("getTools", currentBlock.tool.inlineTools);
     const inlineTools = Array.from(currentBlock.tool.inlineTools.values());
 
     return inlineTools.filter((tool) => {

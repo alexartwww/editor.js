@@ -417,7 +417,6 @@ export default class Header implements BlockTool {
     /**
      * Add text to block
      */
-    console.log('text', this._data.text);
     tag.innerHTML = this._data.text || '';
 
     /**
@@ -439,54 +438,74 @@ export default class Header implements BlockTool {
     } else {
       tag.dataset['placeholder'] = this.api.i18n.t(this._config?.placeholderLevel || '');
     }
+
     // Ограничение максимальной длины заголовка
     const maxLength = (currentLevel.number === 1) ? this._config?.maxLength : this._config?.maxLengthLevel;
-    if (maxLength) {
-      tag.addEventListener('beforeinput', (e: InputEvent) => {
-        const currentLength = tag.textContent?.length || 0;
+    if (maxLength && !this.readOnly) {
 
-        // Разрешаем удаление и навигацию всегда
-        const isDeletion = e.inputType.startsWith('delete');
-        if (isDeletion) {
-          return;
-        }
-
-        // Если уже достигли лимита — блокируем ввод нового текста
-        if (currentLength >= maxLength) {
-          e.preventDefault();
-        }
-      });
-
-      // Защита от вставки длинного текста через paste
+      // Перехватываем paste на уровне нативного события — здесь clipboardData точно есть
       tag.addEventListener('paste', (e: ClipboardEvent) => {
-        e.preventDefault();
+        e.preventDefault(); // всегда блокируем нативную вставку
 
         const pasteText = e.clipboardData?.getData('text/plain') || '';
-        const currentLength = tag.textContent?.length || 0;
-        const allowedLength = maxLength - currentLength;
-
-        if (allowedLength <= 0) {
-          return;
-        }
-
-        const textToInsert = pasteText.slice(0, allowedLength);
 
         const selection = window.getSelection();
-        if (!selection || selection.rangeCount === 0) {
+        const selectedLength = selection && !selection.isCollapsed
+          ? selection.toString().length
+          : 0;
+        const currentLength = (tag.textContent?.length || 0) - selectedLength;
+        const availableSpace = Math.max(0, maxLength - currentLength);
+
+        if (availableSpace <= 0) {
           return;
         }
 
-        const range = selection.getRangeAt(0);
-        range.deleteContents();
+        const textToInsert = pasteText.slice(0, availableSpace);
+        if (!textToInsert) {
+          return;
+        }
 
+        const range = selection?.getRangeAt(0);
+        if (!range) {
+          return;
+        }
+
+        range.deleteContents();
         const textNode = document.createTextNode(textToInsert);
         range.insertNode(textNode);
-
-        // переносим каретку в конец вставленного текста
         range.setStartAfter(textNode);
         range.setEndAfter(textNode);
-        selection.removeAllRanges();
-        selection.addRange(range);
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+      });
+
+      // beforeinput только для обычного ввода (не paste — он уже обработан выше)
+      tag.addEventListener('beforeinput', (e: InputEvent) => {
+        if (e.inputType.startsWith('delete')) {
+          return;
+        }
+
+        // paste обрабатывается отдельным listener выше
+        if (e.inputType === 'insertFromPaste') {
+          return;
+        }
+
+        const selection = window.getSelection();
+        const selectedLength = selection && !selection.isCollapsed
+          ? selection.toString().length
+          : 0;
+        const currentLength = (tag.textContent?.length || 0) - selectedLength;
+        const availableSpace = maxLength - currentLength;
+
+        if (availableSpace <= 0) {
+          e.preventDefault();
+          return;
+        }
+
+        const insertText = e.data || '';
+        if (insertText.length > availableSpace) {
+          e.preventDefault();
+        }
       });
     }
     // H1: блокируем Backspace в начале (чтобы не слить с предыдущим блоком)
@@ -639,8 +658,7 @@ export default class Header implements BlockTool {
       }
 
       if (this._config?.levels) {
-        // Fallback to nearest level when specified not available
-        level = this._config?.levels.reduce((prevLevel, currLevel) => {
+        level = this._config.levels.reduce((prevLevel, currLevel) => {
           return Math.abs(currLevel - level) < Math.abs(prevLevel - level) ? currLevel : prevLevel;
         });
       }
@@ -650,7 +668,26 @@ export default class Header implements BlockTool {
         level = this._config?.levels?.find(l => l !== 1) ?? 2;
       }
 
-      this.data = { level, text: content.innerHTML };
+      // Обрезаем текст по лимиту
+      const maxLength = (level === 1)
+        ? this._config?.maxLength
+        : this._config?.maxLengthLevel;
+
+      let text = content.innerHTML || content.textContent || '';
+
+      if (maxLength) {
+        // Учитываем уже существующий текст в блоке
+        const existingLength = this._element?.textContent?.length || 0;
+        const allowed = Math.max(0, maxLength - existingLength);
+
+        // Обрезаем по textContent (без HTML-тегов считаем символы)
+        const plainText = content.textContent || '';
+        if (plainText.length > allowed) {
+          text = plainText.slice(0, allowed);
+        }
+      }
+
+      this.data = { level, text };
     }
   }
 
