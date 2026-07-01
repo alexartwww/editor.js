@@ -441,27 +441,50 @@ export default class Header implements BlockTool {
     // Ограничение максимальной длины заголовка
     const maxLength = (currentLevel.number === 1) ? this._config?.maxLength : this._config?.maxLengthLevel;
     if (maxLength) {
-      // Защита от вставки длинного текста через paste
-      tag.addEventListener('paste', (e: ClipboardEvent) => {
-        const pasteHtml = e.clipboardData?.getData('text/html') || '';
+      tag.addEventListener('beforeinput', (e: InputEvent) => {
+        const currentLength = tag.textContent?.length || 0;
 
-        // HTML с заголовками — отдаём EditorJS
-        if (/<h[1-6]/i.test(pasteHtml)) {
+        // Разрешаем удаление и навигацию всегда
+        const isDeletion = e.inputType.startsWith('delete');
+        if (isDeletion) {
           return;
         }
 
-        // Обычный текст — проверяем лимит
+        // Если уже достигли лимита — блокируем ввод нового текста
+        if (currentLength >= maxLength) {
+          e.preventDefault();
+        }
+      });
+
+      // Защита от вставки длинного текста через paste
+      tag.addEventListener('paste', (e: ClipboardEvent) => {
+        // Внимание: нельзя определять «вставку внешнего заголовка» по
+        // наличию тега <h1>-<h6> в text/html буфера обмена — браузер
+        // всегда оборачивает скопированный фрагмент тегом исходного
+        // элемента, поэтому копирование ЛЮБОГО текста из ЛЮБОГО
+        // заголовка (в том числе из этого же поля) даёт точно такой же
+        // <hN>...</hN> в буфере, как и настоящая вставка заголовка с
+        // внешнего сайта. Раньше здесь была такая проверка с ранним
+        // return без stopPropagation — событие всплывало до
+        // paste-модуля EditorJS (paste.ts:272, слушатель на holder),
+        // который вставлял ПОЛНЫЙ, необрезанный текст через
+        // execCommand('insertHTML') (paste.ts:826), сводя лимит на нет.
+        // Поэтому при настроенном maxLength вставку всегда обрабатываем
+        // локально, жертвуя автоопределением уровня при вставке
+        // скопированного заголовка ради соблюдения лимита длины.
+        e.preventDefault();
+        e.stopPropagation();
+
         const pasteText = e.clipboardData?.getData('text/plain') || '';
         const currentLength = tag.textContent?.length || 0;
         const allowedLength = maxLength - currentLength;
-
-        e.preventDefault(); // блокируем только если сами обрабатываем
 
         if (allowedLength <= 0) {
           return;
         }
 
         const textToInsert = pasteText.slice(0, allowedLength);
+
         const selection = window.getSelection();
         if (!selection || selection.rangeCount === 0) {
           return;
@@ -473,6 +496,7 @@ export default class Header implements BlockTool {
         const textNode = document.createTextNode(textToInsert);
         range.insertNode(textNode);
 
+        // переносим каретку в конец вставленного текста
         range.setStartAfter(textNode);
         range.setEndAfter(textNode);
         selection.removeAllRanges();

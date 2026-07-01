@@ -472,8 +472,9 @@ export default class BlockEvents extends Module {
   private delete(event: KeyboardEvent): void {
     const { BlockManager, Caret } = this.Editor;
     const { currentBlock, nextBlock } = BlockManager;
+    const isH1 = currentBlock?.currentInput?.tagName === 'H1';
 
-    if (currentBlock?.settings?.holdFirstHeader === true) {
+    if (currentBlock?.settings?.holdFirstHeader === true && isH1) {
       return;
     }
 
