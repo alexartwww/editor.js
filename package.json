@@ -37,7 +37,7 @@
     "@cypress/code-coverage": "^3.10.3",
     "@editorjs/code": "^2.7.0",
     "@editorjs/delimiter": "^1.2.0",
-    "@editorjs/header": "alexartwww/header#98e4ae36412dbe765470b182cae225c06c28c172",
+    "@editorjs/header": "alexartwww/header#78f9cac387dede031a8e8b5e174004ab94a5f982",
     "@editorjs/paragraph": "alexartwww/paragraph#a62fbf580b0f65dac50bf5d61131f8298715e2c3",
     "@editorjs/simple-image": "^1.4.1",
     "@types/node": "^18.15.11",
