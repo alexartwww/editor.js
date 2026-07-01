@@ -409,6 +409,10 @@ export default class BlockEvents extends Module {
      * For example, caret at the start of the Quote second input (caption) — just navigate previous input
      */
     if (!isFirstInputFocused) {
+      if (currentBlock.settings?.holdOnLastBackspace === true) {
+        return;
+      }
+
       Caret.navigatePrevious();
 
       return;

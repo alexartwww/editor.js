@@ -1567,11 +1567,11 @@ class R extends Oe {
       const l = a === void 0, c = a instanceof InputEvent;
       !l && !c && this.detectToolRootChange(a);
       let d;
-      l || c ? d = !0 : d = !(a.length > 0 && a.every((f) => {
-        const { addedNodes: g, removedNodes: p, target: v } = f;
+      l || c ? d = !0 : d = !(a.length > 0 && a.every((p) => {
+        const { addedNodes: g, removedNodes: f, target: v } = p;
         return [
           ...Array.from(g),
-          ...Array.from(p),
+          ...Array.from(f),
           v
         ].some((T) => (h.isElement(T) || (T = T.parentElement), T && T.closest('[data-mutation-free="true"]') !== null));
       })), d && (this.dropInputsCache(), this.updateCurrentInput(), this.toggleInputsEmptyMark(), this.call(
@@ -2014,14 +2014,14 @@ class gi extends E {
       const r = await i.update(s, t, o);
       return new J(r);
     }, this.convert = async (e, t, o) => {
-      var u, f;
+      var u, p;
       const { BlockManager: i, Tools: s } = this.Editor, r = i.getBlockById(e);
       if (!r)
         throw new Error(`Block with id "${e}" not found`);
       const a = s.blockTools.get(r.name), l = s.blockTools.get(t);
       if (!l)
         throw new Error(`Block Tool with type "${t}" not found`);
-      const c = ((u = a == null ? void 0 : a.conversionConfig) == null ? void 0 : u.export) !== void 0, d = ((f = l.conversionConfig) == null ? void 0 : f.import) !== void 0;
+      const c = ((u = a == null ? void 0 : a.conversionConfig) == null ? void 0 : u.export) !== void 0, d = ((p = l.conversionConfig) == null ? void 0 : p.import) !== void 0;
       if (c && d) {
         const g = await i.convert(r, t, o);
         return new J(g);
@@ -2554,13 +2554,13 @@ var Ko = { exports: {} };
               if (!u)
                 return d;
               if (c && typeof btoa == "function") {
-                var f = (p = u, "/*# sourceMappingURL=data:application/json;charset=utf-8;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(p)))) + " */"), g = u.sources.map(function(v) {
+                var p = (f = u, "/*# sourceMappingURL=data:application/json;charset=utf-8;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(f)))) + " */"), g = u.sources.map(function(v) {
                   return "/*# sourceURL=" + u.sourceRoot + v + " */";
                 });
-                return [d].concat(g).concat([f]).join(`
+                return [d].concat(g).concat([p]).join(`
 `);
               }
-              var p;
+              var f;
               return [d].join(`
 `);
             }(r, i);
@@ -2602,8 +2602,8 @@ var Ko = { exports: {} };
           }
           return m[w];
         };
-      }(), d = null, u = 0, f = [], g = i(5);
-      function p(k, m) {
+      }(), d = null, u = 0, p = [], g = i(5);
+      function f(k, m) {
         for (var w = 0; w < k.length; w++) {
           var x = k[w], I = a[x.id];
           if (I) {
@@ -2631,9 +2631,9 @@ var Ko = { exports: {} };
         var w = c(k.insertInto);
         if (!w)
           throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-        var x = f[f.length - 1];
+        var x = p[p.length - 1];
         if (k.insertAt === "top")
-          x ? x.nextSibling ? w.insertBefore(m, x.nextSibling) : w.appendChild(m) : w.insertBefore(m, w.firstChild), f.push(m);
+          x ? x.nextSibling ? w.insertBefore(m, x.nextSibling) : w.appendChild(m) : w.insertBefore(m, w.firstChild), p.push(m);
         else if (k.insertAt === "bottom")
           w.appendChild(m);
         else {
@@ -2652,8 +2652,8 @@ var Ko = { exports: {} };
         if (k.parentNode === null)
           return !1;
         k.parentNode.removeChild(k);
-        var m = f.indexOf(k);
-        m >= 0 && f.splice(m, 1);
+        var m = p.indexOf(k);
+        m >= 0 && p.splice(m, 1);
       }
       function M(k) {
         var m = document.createElement("style");
@@ -2713,12 +2713,12 @@ var Ko = { exports: {} };
           throw new Error("The style-loader cannot be used in a non-browser environment");
         (m = m || {}).attrs = typeof m.attrs == "object" ? m.attrs : {}, m.singleton || typeof m.singleton == "boolean" || (m.singleton = l()), m.insertInto || (m.insertInto = "head"), m.insertAt || (m.insertAt = "bottom");
         var w = v(k, m);
-        return p(w, m), function(x) {
+        return f(w, m), function(x) {
           for (var I = [], C = 0; C < w.length; C++) {
             var N = w[C];
             (B = a[N.id]).refs--, I.push(B);
           }
-          for (x && p(v(x, m), m), C = 0; C < I.length; C++) {
+          for (x && f(v(x, m), m), C = 0; C < I.length; C++) {
             var B;
             if ((B = I[C]).refs === 0) {
               for (var K = 0; K < B.parts.length; K++)
@@ -2750,30 +2750,30 @@ var Ko = { exports: {} };
           return i;
         var r = s.protocol + "//" + s.host, a = r + s.pathname.replace(/\/[^\/]*$/, "/");
         return i.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(l, c) {
-          var d, u = c.trim().replace(/^"(.*)"$/, function(f, g) {
+          var d, u = c.trim().replace(/^"(.*)"$/, function(p, g) {
             return g;
-          }).replace(/^'(.*)'$/, function(f, g) {
+          }).replace(/^'(.*)'$/, function(p, g) {
             return g;
           });
           return /^(#|data:|http:\/\/|https:\/\/|file:\/\/\/|\s*$)/i.test(u) ? l : (d = u.indexOf("//") === 0 ? u : u.indexOf("/") === 0 ? r + u : a + u.replace(/^\.\//, ""), "url(" + JSON.stringify(d) + ")");
         });
       };
     }, function(t, o, i) {
-      var s, r, a, l, c, d, u, f, g;
-      t.exports = (s = "cdx-notifies", r = "cdx-notify", a = "cdx-notify__cross", l = "cdx-notify__button--confirm", c = "cdx-notify__button--cancel", d = "cdx-notify__input", u = "cdx-notify__button", f = "cdx-notify__btns-wrapper", { alert: g = function(p) {
-        var v = document.createElement("DIV"), O = document.createElement("DIV"), T = p.message, M = p.style;
+      var s, r, a, l, c, d, u, p, g;
+      t.exports = (s = "cdx-notifies", r = "cdx-notify", a = "cdx-notify__cross", l = "cdx-notify__button--confirm", c = "cdx-notify__button--cancel", d = "cdx-notify__input", u = "cdx-notify__button", p = "cdx-notify__btns-wrapper", { alert: g = function(f) {
+        var v = document.createElement("DIV"), O = document.createElement("DIV"), T = f.message, M = f.style;
         return v.classList.add(r), M && v.classList.add(r + "--" + M), v.innerHTML = T, O.classList.add(a), O.addEventListener("click", v.remove.bind(v)), v.appendChild(O), v;
-      }, confirm: function(p) {
-        var v = g(p), O = document.createElement("div"), T = document.createElement("button"), M = document.createElement("button"), Z = v.querySelector("." + a), F = p.cancelHandler, $ = p.okHandler;
-        return O.classList.add(f), T.innerHTML = p.okText || "Confirm", M.innerHTML = p.cancelText || "Cancel", T.classList.add(u), M.classList.add(u), T.classList.add(l), M.classList.add(c), F && typeof F == "function" && (M.addEventListener("click", F), Z.addEventListener("click", F)), $ && typeof $ == "function" && T.addEventListener("click", $), T.addEventListener("click", v.remove.bind(v)), M.addEventListener("click", v.remove.bind(v)), O.appendChild(T), O.appendChild(M), v.appendChild(O), v;
-      }, prompt: function(p) {
-        var v = g(p), O = document.createElement("div"), T = document.createElement("button"), M = document.createElement("input"), Z = v.querySelector("." + a), F = p.cancelHandler, $ = p.okHandler;
-        return O.classList.add(f), T.innerHTML = p.okText || "Ok", T.classList.add(u), T.classList.add(l), M.classList.add(d), p.placeholder && M.setAttribute("placeholder", p.placeholder), p.default && (M.value = p.default), p.inputType && (M.type = p.inputType), F && typeof F == "function" && Z.addEventListener("click", F), $ && typeof $ == "function" && T.addEventListener("click", function() {
+      }, confirm: function(f) {
+        var v = g(f), O = document.createElement("div"), T = document.createElement("button"), M = document.createElement("button"), Z = v.querySelector("." + a), F = f.cancelHandler, $ = f.okHandler;
+        return O.classList.add(p), T.innerHTML = f.okText || "Confirm", M.innerHTML = f.cancelText || "Cancel", T.classList.add(u), M.classList.add(u), T.classList.add(l), M.classList.add(c), F && typeof F == "function" && (M.addEventListener("click", F), Z.addEventListener("click", F)), $ && typeof $ == "function" && T.addEventListener("click", $), T.addEventListener("click", v.remove.bind(v)), M.addEventListener("click", v.remove.bind(v)), O.appendChild(T), O.appendChild(M), v.appendChild(O), v;
+      }, prompt: function(f) {
+        var v = g(f), O = document.createElement("div"), T = document.createElement("button"), M = document.createElement("input"), Z = v.querySelector("." + a), F = f.cancelHandler, $ = f.okHandler;
+        return O.classList.add(p), T.innerHTML = f.okText || "Ok", T.classList.add(u), T.classList.add(l), M.classList.add(d), f.placeholder && M.setAttribute("placeholder", f.placeholder), f.default && (M.value = f.default), f.inputType && (M.type = f.inputType), F && typeof F == "function" && Z.addEventListener("click", F), $ && typeof $ == "function" && T.addEventListener("click", function() {
           $(M.value);
         }), T.addEventListener("click", v.remove.bind(v)), O.appendChild(M), O.appendChild(T), v.appendChild(O), v;
       }, getWrapper: function() {
-        var p = document.createElement("DIV");
-        return p.classList.add(s), p;
+        var f = document.createElement("DIV");
+        return f.classList.add(s), f;
       } });
     }]);
   });
@@ -2854,12 +2854,12 @@ var Xo = { exports: {} };
     n.exports = o();
   })(Ce, function() {
     function t(u) {
-      var f = u.tags, g = Object.keys(f), p = g.map(function(v) {
-        return typeof f[v];
+      var p = u.tags, g = Object.keys(p), f = g.map(function(v) {
+        return typeof p[v];
       }).every(function(v) {
         return v === "object" || v === "boolean" || v === "function";
       });
-      if (!p)
+      if (!f)
         throw new Error("The configuration was invalid");
       this.config = u;
     }
@@ -2872,56 +2872,56 @@ var Xo = { exports: {} };
       return s.indexOf(u.nodeName) !== -1;
     }
     t.prototype.clean = function(u) {
-      const f = document.implementation.createHTMLDocument(), g = f.createElement("div");
-      return g.innerHTML = u, this._sanitize(f, g), g.innerHTML;
-    }, t.prototype._sanitize = function(u, f) {
-      var g = a(u, f), p = g.firstChild();
-      if (p)
+      const p = document.implementation.createHTMLDocument(), g = p.createElement("div");
+      return g.innerHTML = u, this._sanitize(p, g), g.innerHTML;
+    }, t.prototype._sanitize = function(u, p) {
+      var g = a(u, p), f = g.firstChild();
+      if (f)
         do {
-          if (p.nodeType === Node.TEXT_NODE)
-            if (p.data.trim() === "" && (p.previousElementSibling && i(p.previousElementSibling) || p.nextElementSibling && i(p.nextElementSibling))) {
-              f.removeChild(p), this._sanitize(u, f);
+          if (f.nodeType === Node.TEXT_NODE)
+            if (f.data.trim() === "" && (f.previousElementSibling && i(f.previousElementSibling) || f.nextElementSibling && i(f.nextElementSibling))) {
+              p.removeChild(f), this._sanitize(u, p);
               break;
             } else
               continue;
-          if (p.nodeType === Node.COMMENT_NODE) {
-            f.removeChild(p), this._sanitize(u, f);
+          if (f.nodeType === Node.COMMENT_NODE) {
+            p.removeChild(f), this._sanitize(u, p);
             break;
           }
-          var v = r(p), O;
-          v && (O = Array.prototype.some.call(p.childNodes, i));
-          var T = !!f.parentNode, M = i(f) && i(p) && T, Z = p.nodeName.toLowerCase(), F = l(this.config, Z, p), $ = v && O;
-          if ($ || c(p, F) || !this.config.keepNestedBlockElements && M) {
-            if (!(p.nodeName === "SCRIPT" || p.nodeName === "STYLE"))
-              for (; p.childNodes.length > 0; )
-                f.insertBefore(p.childNodes[0], p);
-            f.removeChild(p), this._sanitize(u, f);
+          var v = r(f), O;
+          v && (O = Array.prototype.some.call(f.childNodes, i));
+          var T = !!p.parentNode, M = i(p) && i(f) && T, Z = f.nodeName.toLowerCase(), F = l(this.config, Z, f), $ = v && O;
+          if ($ || c(f, F) || !this.config.keepNestedBlockElements && M) {
+            if (!(f.nodeName === "SCRIPT" || f.nodeName === "STYLE"))
+              for (; f.childNodes.length > 0; )
+                p.insertBefore(f.childNodes[0], f);
+            p.removeChild(f), this._sanitize(u, p);
             break;
           }
-          for (var Q = 0; Q < p.attributes.length; Q += 1) {
-            var ie = p.attributes[Q];
-            d(ie, F, p) && (p.removeAttribute(ie.name), Q = Q - 1);
+          for (var Q = 0; Q < f.attributes.length; Q += 1) {
+            var ie = f.attributes[Q];
+            d(ie, F, f) && (f.removeAttribute(ie.name), Q = Q - 1);
           }
-          this._sanitize(u, p);
-        } while (p = g.nextSibling());
+          this._sanitize(u, f);
+        } while (f = g.nextSibling());
     };
-    function a(u, f) {
+    function a(u, p) {
       return u.createTreeWalker(
-        f,
+        p,
         NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_COMMENT,
         null,
         !1
       );
     }
-    function l(u, f, g) {
-      return typeof u.tags[f] == "function" ? u.tags[f](g) : u.tags[f];
+    function l(u, p, g) {
+      return typeof u.tags[p] == "function" ? u.tags[p](g) : u.tags[p];
     }
-    function c(u, f) {
-      return typeof f > "u" ? !0 : typeof f == "boolean" ? !f : !1;
+    function c(u, p) {
+      return typeof p > "u" ? !0 : typeof p == "boolean" ? !p : !1;
     }
-    function d(u, f, g) {
-      var p = u.name.toLowerCase();
-      return f === !0 ? !1 : typeof f[p] == "function" ? !f[p](u.value, g) : typeof f[p] > "u" || f[p] === !1 ? !0 : typeof f[p] == "string" ? f[p] !== u.value : !1;
+    function d(u, p, g) {
+      var f = u.name.toLowerCase();
+      return p === !0 ? !1 : typeof p[f] == "function" ? !p[f](u.value, g) : typeof p[f] > "u" || p[f] === !1 ? !0 : typeof p[f] == "string" ? p[f] !== u.value : !1;
     }
     return t;
   });
@@ -4847,8 +4847,8 @@ class ms extends E {
         name: d.name,
         closeOnActivate: !0,
         onActivate: async () => {
-          const { BlockManager: f, Caret: g, Toolbar: p } = this.Editor, v = await f.convert(e, d.name, u.data);
-          p.close(), g.setToBlock(v, g.positions.END);
+          const { BlockManager: p, Caret: g, Toolbar: f } = this.Editor, v = await p.convert(e, d.name, u.data);
+          f.close(), g.setToBlock(v, g.positions.END);
         }
       }), a.push(u.title));
     }), c), []);
@@ -4934,8 +4934,8 @@ var sn = { exports: {} };
       var a = function() {
         function l(c) {
           var d = this;
-          (function(u, f) {
-            if (!(u instanceof f))
+          (function(u, p) {
+            if (!(u instanceof p))
               throw new TypeError("Cannot call a class as a function");
           })(this, l), this.commands = {}, this.keys = {}, this.name = c.name, this.parseShortcutName(c.name), this.element = c.on, this.callback = c.callback, this.executeShortcut = function(u) {
             d.execute(u);
@@ -4950,9 +4950,9 @@ var sn = { exports: {} };
           for (var d = 0; d < c.length; d++) {
             c[d] = c[d].toUpperCase();
             var u = !1;
-            for (var f in l.supportedCommands)
-              if (l.supportedCommands[f].includes(c[d])) {
-                u = this.commands[f] = !0;
+            for (var p in l.supportedCommands)
+              if (l.supportedCommands[p].includes(c[d])) {
+                u = this.commands[p] = !0;
                 break;
               }
             u || (this.keys[c[d]] = !0);
@@ -4960,13 +4960,13 @@ var sn = { exports: {} };
           for (var g in l.supportedCommands)
             this.commands[g] || (this.commands[g] = !1);
         } }, { key: "execute", value: function(c) {
-          var d, u = { CMD: c.ctrlKey || c.metaKey, SHIFT: c.shiftKey, ALT: c.altKey }, f = !0;
+          var d, u = { CMD: c.ctrlKey || c.metaKey, SHIFT: c.shiftKey, ALT: c.altKey }, p = !0;
           for (d in this.commands)
-            this.commands[d] !== u[d] && (f = !1);
-          var g, p = !0;
+            this.commands[d] !== u[d] && (p = !1);
+          var g, f = !0;
           for (g in this.keys)
-            p = p && c.keyCode === l.keyCodes[g];
-          f && p && this.callback(c);
+            f = f && c.keyCode === l.keyCodes[g];
+          p && f && this.callback(c);
         } }, { key: "remove", value: function() {
           this.element.removeEventListener("keydown", this.executeShortcut);
         } }]), l;
@@ -5383,8 +5383,8 @@ class Bs extends E {
       const u = parseInt(window.getComputedStyle(e.pluginsContent).paddingTop);
       i = t.offsetTop + u;
     } else {
-      const u = li(r), f = parseInt(window.getComputedStyle(this.nodes.plusButton).height, 10), g = 8;
-      i = t.offsetTop + u - f + g + c;
+      const u = li(r), p = parseInt(window.getComputedStyle(this.nodes.plusButton).height, 10), g = 8;
+      i = t.offsetTop + u - p + g + c;
     }
     this.nodes.wrapper.style.top = `${Math.floor(i)}px`, this.Editor.BlockManager.blocks.length === 1 && e.isEmpty ? this.blockTunesToggler.hide() : this.blockTunesToggler.show(), this.open();
   }
@@ -5738,7 +5738,7 @@ class Cs extends E {
         }
       const a = r !== void 0 ? vt(r) : void 0, l = U.t(V.toolNames, o.title || He(o.name));
       [s].flat().forEach((c) => {
-        var u, f;
+        var u, p;
         const d = {
           name: o.name,
           onActivate: () => {
@@ -5756,7 +5756,7 @@ class Cs extends E {
             type: _.Html
           };
           if (A(i.renderActions)) {
-            const p = i.renderActions();
+            const f = i.renderActions();
             g.children = {
               isOpen: (u = i.checkState) == null ? void 0 : u.call(i, b.get()),
               /** Disable keyboard navigation in actions, as it might conflict with enter press handling */
@@ -5764,12 +5764,12 @@ class Cs extends E {
               items: [
                 {
                   type: _.Html,
-                  element: p
+                  element: f
                 }
               ]
             };
           } else
-            (f = i.checkState) == null || f.call(i, b.get());
+            (p = i.checkState) == null || p.call(i, b.get());
           e.push(g);
         } else if (c.type === _.Html)
           e.push({
@@ -6603,17 +6603,17 @@ function Fr(n, e) {
   Object.defineProperty(n, "getDeepestNode", { enumerable: !0, get: function() {
     return u.getDeepestNode;
   } });
-  var f = xn;
+  var p = xn;
   Object.defineProperty(n, "findAllInputs", { enumerable: !0, get: function() {
-    return f.findAllInputs;
+    return p.findAllInputs;
   } });
   var g = Bn;
   Object.defineProperty(n, "isCollapsedWhitespaces", { enumerable: !0, get: function() {
     return g.isCollapsedWhitespaces;
   } });
-  var p = Rt;
+  var f = Rt;
   Object.defineProperty(n, "isContentEditable", { enumerable: !0, get: function() {
-    return p.isContentEditable;
+    return f.isContentEditable;
   } });
   var v = Gt;
   Object.defineProperty(n, "isElement", { enumerable: !0, get: function() {
@@ -6713,11 +6713,11 @@ function Yr(n, e) {
     var s = document.createRange(), r = window.getSelection();
     if (!r)
       return;
-    var a = function(f) {
+    var a = function(p) {
       var g = document.createTextNode("");
-      f.appendChild(g), s.setStart(g, 0), s.setEnd(g, 0);
-    }, l = function(f) {
-      return f != null;
+      p.appendChild(g), s.setStart(g, 0), s.setEnd(g, 0);
+    }, l = function(p) {
+      return p != null;
     }, c = n.childNodes, d = e ? c[0] : c[c.length - 1];
     if (l(d)) {
       for (; l(d) && d.nodeType !== Node.TEXT_NODE; )
@@ -7014,11 +7014,13 @@ class na extends E {
    * @param {KeyboardEvent} event - keydown
    */
   backspace(e) {
-    var l, c, d;
+    var l, c, d, u;
     const { BlockManager: t, Caret: o } = this.Editor, { currentBlock: i, previousBlock: s } = t;
     if (((l = s == null ? void 0 : s.settings) == null ? void 0 : l.holdFirstHeader) === !0 || i === void 0 || !b.isCollapsed || !i.currentInput || !Ne(i.currentInput))
       return;
     if (e.preventDefault(), this.Editor.Toolbar.close(), !(i.currentInput === i.firstInput)) {
+      if (((c = i.settings) == null ? void 0 : c.holdOnLastBackspace) === !0)
+        return;
       o.navigatePrevious();
       return;
     }
@@ -7029,17 +7031,17 @@ class na extends E {
       return;
     }
     if (i.isEmpty) {
-      if (((c = i.settings) == null ? void 0 : c.holdOnLastBackspace) === !0)
+      if (((d = i.settings) == null ? void 0 : d.holdOnLastBackspace) === !0)
         return;
       t.removeBlock(i);
-      const u = t.currentBlock;
-      o.setToBlock(u, o.positions.END);
+      const p = t.currentBlock;
+      o.setToBlock(p, o.positions.END);
       return;
     }
     if (xo(s, i))
       this.mergeBlocks(s, i);
     else {
-      if (((d = i.settings) == null ? void 0 : d.holdOnLastBackspace) === !0)
+      if (((u = i.settings) == null ? void 0 : u.holdOnLastBackspace) === !0)
         return;
       o.setToBlock(s, o.positions.END);
     }
@@ -7555,17 +7557,17 @@ class ra extends E {
     replace: r = !1,
     tunes: a = {}
   } = {}) {
-    var u, f;
+    var u, p;
     const l = this.Editor.Tools.blockTools.get(t);
     if (((u = l == null ? void 0 : l.settings) == null ? void 0 : u.singleton) === !0) {
-      const g = this.blocks.find((p) => p.name === t);
+      const g = this.blocks.find((f) => f.name === t);
       if (g)
         return g;
     }
     let c = i;
     if (c === void 0 && (c = this.currentBlockIndex + (r ? 0 : 1)), r) {
       const g = this.getBlockByIndex(c);
-      ((f = g == null ? void 0 : g.settings) == null ? void 0 : f.holdFirstHeader) === !0 && (g == null ? void 0 : g.holder.previousElementSibling) === null && (r = !1, c = c + 1);
+      ((p = g == null ? void 0 : g.settings) == null ? void 0 : p.holdFirstHeader) === !0 && (g == null ? void 0 : g.holder.previousElementSibling) === null && (r = !1, c = c + 1);
     }
     const d = this.composeBlock({
       id: e,
@@ -8705,7 +8707,7 @@ const Rn = class Dn extends E {
       } catch {
       }
     t && a.trim() && l.trim() && (l = "<p>" + (l.trim() ? l : a) + "</p>");
-    const c = Object.keys(this.toolsTags).reduce((f, g) => (f[g.toLowerCase()] = this.toolsTags[g].sanitizationConfig ?? {}, f), {}), d = Object.assign({}, c, o.getAllInlineToolsSanitizeConfig(), { br: {} }), u = G(l, d);
+    const c = Object.keys(this.toolsTags).reduce((p, g) => (p[g.toLowerCase()] = this.toolsTags[g].sanitizationConfig ?? {}, p), {}), d = Object.assign({}, c, o.getAllInlineToolsSanitizeConfig(), { br: {} }), u = G(l, d);
     !u.trim() || u.trim() === a || !h.isHTMLString(u) ? await this.processText(a) : await this.processText(u, !0);
   }
   /**
@@ -8859,11 +8861,11 @@ const Rn = class Dn extends E {
    */
   async processFile(e) {
     const t = Jn(e), o = Object.entries(this.toolsFiles).find(([r, { mimeTypes: a, extensions: l }]) => {
-      const [c, d] = e.type.split("/"), u = l.find((g) => g.toLowerCase() === t.toLowerCase()), f = a.find((g) => {
-        const [p, v] = g.split("/");
-        return p === c && (v === d || v === "*");
+      const [c, d] = e.type.split("/"), u = l.find((g) => g.toLowerCase() === t.toLowerCase()), p = a.find((g) => {
+        const [f, v] = g.split("/");
+        return f === c && (v === d || v === "*");
       });
-      return !!u || !!f;
+      return !!u || !!p;
     });
     if (!o)
       return;
@@ -8893,8 +8895,8 @@ const Rn = class Dn extends E {
           r = s, l = !0, this.toolsTags[r.tagName] && (a = this.toolsTags[r.tagName].tool);
           break;
       }
-      const { tags: c } = a.pasteConfig || { tags: [] }, d = c.reduce((g, p) => (this.collectTagNames(p).forEach((O) => {
-        const T = D(p) ? p[O] : null;
+      const { tags: c } = a.pasteConfig || { tags: [] }, d = c.reduce((g, f) => (this.collectTagNames(f).forEach((O) => {
+        const T = D(f) ? f[O] : null;
         g[O.toLowerCase()] = T || {};
       }), g), {}), u = Object.assign({}, d, a.baseSanitizeConfig);
       if (!this.getBlockConfigByToolValue(a.name, "skipSanitizer", !1))
@@ -8905,14 +8907,14 @@ const Rn = class Dn extends E {
           }).firstChild;
         } else
           r.innerHTML = G(r.innerHTML, u);
-      const f = this.composePasteEvent("tag", {
+      const p = this.composePasteEvent("tag", {
         data: r
       });
       return {
         content: r,
         isBlock: l,
         tool: a.name,
-        event: f
+        event: p
       };
     }).filter((s) => {
       const r = h.isEmpty(s.content), a = h.isSingleTag(s.content);
@@ -9051,13 +9053,13 @@ const Rn = class Dn extends E {
    */
   processElementNode(e, t, o) {
     const i = Object.keys(this.toolsTags), s = e, { tool: r } = this.toolsTags[s.tagName] || {}, a = (r == null ? void 0 : r.name) || "", l = this.tagsByTool[a] || [], c = i.includes(s.tagName), d = h.blockElements.includes(s.tagName.toLowerCase()), u = Array.from(s.children).some(
-      ({ tagName: p }) => i.includes(p) && !l.includes(p)
-    ), f = this.getBlockConfigByToolValue(a, "ignoreContainsAnotherToolTags", !1), g = Array.from(s.children).some(
-      ({ tagName: p }) => h.blockElements.includes(p.toLowerCase())
+      ({ tagName: f }) => i.includes(f) && !l.includes(f)
+    ), p = this.getBlockConfigByToolValue(a, "ignoreContainsAnotherToolTags", !1), g = Array.from(s.children).some(
+      ({ tagName: f }) => h.blockElements.includes(f.toLowerCase())
     );
-    if (!d && !c && (!u || f))
+    if (!d && !c && (!u || p))
       return o.appendChild(s), [...t, o];
-    if (c && (!u || f) || d && !g && (!u || f))
+    if (c && (!u || p) || d && !g && (!u || p))
       return [...t, o, s];
   }
   /**
@@ -9378,22 +9380,22 @@ class Be extends E {
     const a = this.stackOfSelected[o - 1] - this.stackOfSelected[o - 2] > 0;
     let l = r;
     o > 1 && (l = a ? i : s);
-    const c = e > this.stackOfSelected[o - 1] && l === i, d = e < this.stackOfSelected[o - 1] && l === s, f = !(c || d || l === r);
-    if (!f && (e > this.stackOfSelected[o - 1] || this.stackOfSelected[o - 1] === void 0)) {
+    const c = e > this.stackOfSelected[o - 1] && l === i, d = e < this.stackOfSelected[o - 1] && l === s, p = !(c || d || l === r);
+    if (!p && (e > this.stackOfSelected[o - 1] || this.stackOfSelected[o - 1] === void 0)) {
       let v = this.stackOfSelected[o - 1] + 1 || e;
       for (v; v <= e; v++)
         this.addBlockInSelection(v);
       return;
     }
-    if (!f && e < this.stackOfSelected[o - 1]) {
+    if (!p && e < this.stackOfSelected[o - 1]) {
       for (let v = this.stackOfSelected[o - 1] - 1; v >= e; v--)
         this.addBlockInSelection(v);
       return;
     }
-    if (!f)
+    if (!p)
       return;
-    let g = o - 1, p;
-    for (e > this.stackOfSelected[o - 1] ? p = () => e > this.stackOfSelected[g] : p = () => e < this.stackOfSelected[g]; p(); )
+    let g = o - 1, f;
+    for (e > this.stackOfSelected[o - 1] ? f = () => e > this.stackOfSelected[g] : f = () => e < this.stackOfSelected[g]; f(); )
       this.rectCrossesBlocks && this.Editor.BlockSelection.unSelectBlockByIndex(this.stackOfSelected[g]), this.stackOfSelected.pop(), g--;
   }
 }
@@ -9990,16 +9992,16 @@ class Fn {
     if (i.length === 0)
       return [];
     const s = [], r = i.reduce((d, u) => {
-      var f;
-      return (f = u.toolbox) == null || f.forEach((g) => {
+      var p;
+      return (p = u.toolbox) == null || p.forEach((g) => {
         s.indexOf(g.title) === -1 && (d.push({
           icon: g.icon,
           title: U.t(V.toolNames, g.title || ""),
           name: u.name,
           closeOnActivate: !0,
           onActivate: async () => {
-            const p = await this.blocksAPI.convert(t.id, u.name, g.data);
-            this.caretAPI.setToBlock(p, "end");
+            const f = await this.blocksAPI.convert(t.id, u.name, g.data);
+            this.caretAPI.setToBlock(f, "end");
           }
         }), s.push(g.title));
       }), d;
