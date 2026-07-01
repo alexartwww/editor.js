@@ -405,6 +405,32 @@ export default class Toolbox extends EventsDispatcher<ToolboxEventMap> {
   }
 
   /**
+   * If the tool is configured as singleton and a Block of this tool already exists,
+   * return that Block's API. Otherwise return undefined.
+   *
+   * @param toolName - Tool name to look for
+   */
+  private findSingletonBlock(toolName: string): BlockAPI | undefined {
+    const tool = this.tools.get(toolName);
+
+    if (tool?.settings?.singleton !== true) {
+      return undefined;
+    }
+
+    const blocksCount = this.api.blocks.getBlocksCount();
+
+    for (let index = 0; index < blocksCount; index++) {
+      const block = this.api.blocks.getBlockByIndex(index);
+
+      if (block?.name === toolName) {
+        return block;
+      }
+    }
+
+    return undefined;
+  }
+
+  /**
    * Inserts new block
    * Can be called when button clicked on Toolbox or by ShortcutData
    *
@@ -416,6 +442,19 @@ export default class Toolbox extends EventsDispatcher<ToolboxEventMap> {
     const currentBlock = this.api.blocks.getBlockByIndex(currentBlockIndex);
 
     if (!currentBlock) {
+      return;
+    }
+
+    /**
+     * If the tool can be used only once and already has a Block in the document,
+     * just move the caret there instead of creating (or trying to create) a duplicate.
+     */
+    const existingSingletonBlock = this.findSingletonBlock(toolName);
+
+    if (existingSingletonBlock !== undefined) {
+      this.api.caret.setToBlock(existingSingletonBlock.id, 'end');
+      this.api.toolbar.close();
+
       return;
     }
 
