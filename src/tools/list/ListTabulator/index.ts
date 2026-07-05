@@ -426,6 +426,7 @@ export default class ListTabulator<Renderer extends ListRenderer> {
    */
   public changeStartWith(index: number): void {
     this.listWrapper!.style.setProperty('counter-reset', `item ${index - 1}`);
+    this.listWrapper!.setAttribute('start', String(index));
 
     (this.data.meta as OrderedListItemMeta).start = index;
   }

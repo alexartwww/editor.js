@@ -292,15 +292,23 @@ export default class Header implements BlockTool {
     this._element.insertAdjacentHTML('beforeend', data.text);
   }
 
+
   /**
    * Validate Text block data:
    * - check for emptiness
+   *
+   * The first H1 with holdFirstHeader is protected from removal (see blockEvents/blockManager),
+   * so it must stay valid even when empty — otherwise Saver skips it as an invalid block on save.
    *
    * @param {HeaderData} blockData — data received after saving
    * @returns {boolean} false if saved data is not correct, otherwise true
    * @public
    */
   validate(blockData: HeaderData): boolean {
+    if (this._config.holdFirstHeader === true && blockData.level === 1) {
+      return true;
+    }
+
     return blockData.text.trim() !== '';
   }
 
