@@ -437,6 +437,10 @@ export default class ListTabulator<Renderer extends ListRenderer> {
    */
   public changeCounters(counterType: OlCounterType): void {
     this.listWrapper!.style.setProperty('--list-counter-type', counterType);
+    this.listWrapper!.style.setProperty(
+      'list-style-type',
+      counterType === 'numeric' ? 'decimal' : counterType
+    );
 
     (this.data.meta as OrderedListItemMeta).counterType = counterType;
   }

@@ -99,4 +99,11 @@ export interface ListConfig {
    * @default undefined // All counter types are available when not specified
    */
   counterTypes?: OlCounterType[];
+  /**
+   * Specifies which list styles are switchable from the block tune (does not affect
+   * which styles are offered in the toolbox for inserting a new block).
+   * @example ['unordered', 'ordered'] // Hides "Checklist" from the tune
+   * @default undefined // All styles ('unordered', 'ordered', 'checklist') are available when not specified
+   */
+  styles?: ListDataStyle[];
 }

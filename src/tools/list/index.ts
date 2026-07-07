@@ -88,7 +88,11 @@ export default class EditorjsList {
   }
 
   /**
-   * Convert from text to list with import and export list to text
+   * Convert from text to list with import and export list to text.
+   *
+   * Items are joined/split by line break so that a multi-item list survives a round trip
+   * (e.g. converting List -> List between styles via the block "Convert to" menu, which,
+   * unlike the style tune, goes through export+import) instead of collapsing into one item.
    */
   public static get conversionConfig(): {
     /**
@@ -110,15 +114,19 @@ export default class EditorjsList {
         return EditorjsList.joinRecursive(data);
       },
       import: (content, config) => {
+        const items: ListItem[] = content
+          .split(/\r?\n/)
+          .map(line => line.trim())
+          .filter(line => line.length > 0)
+          .map(line => ({
+            content: line,
+            meta: {},
+            items: [],
+          }));
+
         return {
           meta: {},
-          items: [
-            {
-              content,
-              meta: {},
-              items: [],
-            },
-          ],
+          items: items.length > 0 ? items : [{ content, meta: {}, items: [] }],
           style: config?.defaultStyle !== undefined ? config.defaultStyle : 'unordered',
         };
       },
@@ -177,6 +185,11 @@ export default class EditorjsList {
   private defaultCounterTypes: OlCounterType[];
 
   /**
+   * List styles (unordered / ordered / checklist) allowed to be switched to from the block tune
+   */
+  private enabledStyles: ListDataStyle[];
+
+  /**
    * Tool's data
    */
   private data: ListData;
@@ -220,6 +233,11 @@ export default class EditorjsList {
      */
     this.defaultCounterTypes = (this.config as ListConfig).counterTypes || Array.from(OlCounterTypesMap.values()) as OlCounterType[];
 
+    /**
+     * Set the list styles allowed to be switched to from the block tune
+     */
+    this.enabledStyles = (this.config as ListConfig).styles || ['unordered', 'ordered', 'checklist'];
+
     const initialData = {
       style: this.defaultListStyle,
       meta: {},
@@ -239,14 +257,20 @@ export default class EditorjsList {
   }
 
   /**
-   * Convert from list to text for conversionConfig
+   * Convert from list to text for conversionConfig.
+   * Items (and nested sub-items) are separated by line breaks, one per line,
+   * so that `import` can split them back into separate list items.
    * @param data - current data of the list
    * @returns - string of the recursively merged contents of the items of the list
    */
   private static joinRecursive(data: ListData | ListItem): string {
     return data.items
-      .map(item => `${item.content} ${EditorjsList.joinRecursive(item)}`)
-      .join('');
+      .map(item => {
+        const nested = EditorjsList.joinRecursive(item);
+
+        return nested.length > 0 ? `${item.content}\n${nested}` : item.content;
+      })
+      .join('\n');
   }
 
   /**
@@ -282,35 +306,48 @@ export default class EditorjsList {
    * @returns array of tune configs
    */
   public renderSettings(): MenuConfigItem[] {
-    const defaultTunes: MenuConfigItem[] = [
+    const styleTunes: { style: ListDataStyle; tune: MenuConfigItem }[] = [
       {
-        label: this.api.i18n.t('Unordered'),
-        icon: IconListBulleted,
-        closeOnActivate: true,
-        isActive: this.listStyle == 'unordered',
-        onActivate: () => {
-          this.listStyle = 'unordered';
+        style: 'unordered',
+        tune: {
+          label: this.api.i18n.t('Unordered'),
+          icon: IconListBulleted,
+          closeOnActivate: true,
+          isActive: this.listStyle == 'unordered',
+          onActivate: () => {
+            this.listStyle = 'unordered';
+          },
         },
       },
       {
-        label: this.api.i18n.t('Ordered'),
-        icon: IconListNumbered,
-        closeOnActivate: true,
-        isActive: this.listStyle == 'ordered',
-        onActivate: () => {
-          this.listStyle = 'ordered';
+        style: 'ordered',
+        tune: {
+          label: this.api.i18n.t('Ordered'),
+          icon: IconListNumbered,
+          closeOnActivate: true,
+          isActive: this.listStyle == 'ordered',
+          onActivate: () => {
+            this.listStyle = 'ordered';
+          },
         },
       },
       {
-        label: this.api.i18n.t('Checklist'),
-        icon: IconChecklist,
-        closeOnActivate: true,
-        isActive: this.listStyle == 'checklist',
-        onActivate: () => {
-          this.listStyle = 'checklist';
+        style: 'checklist',
+        tune: {
+          label: this.api.i18n.t('Checklist'),
+          icon: IconChecklist,
+          closeOnActivate: true,
+          isActive: this.listStyle == 'checklist',
+          onActivate: () => {
+            this.listStyle = 'checklist';
+          },
         },
       },
     ];
+
+    const defaultTunes: MenuConfigItem[] = styleTunes
+      .filter(({ style }) => this.enabledStyles.includes(style))
+      .map(({ tune }) => tune);
 
     if (this.listStyle === 'ordered') {
       const startWithElement = renderToolboxInput(
