@@ -774,8 +774,19 @@ export default class Table {
     if (!this.isColumnMenuShowing) {
       if (column > 0 && column <= this.numberOfColumns) { // not sure this statement is needed. Maybe it should be fixed in getHoveredCell()
         this.toolboxColumn.show(() => {
+          /**
+           * The percentage-based formula this used to use (`(100% - cell-size) / numberOfColumns * ...`)
+           * assumes every column has the exact same, evenly-divided width. That stops holding once
+           * columns have their own min-width and the table can scroll horizontally - so measure the
+           * hovered column's actual cell position instead, same way the row toolbox already does it
+           * below (this also keeps the trigger aligned while the table is scrolled).
+           */
+          const hoveredColumnCell = this.getCell(1, column);
+          const { fromLeftBorder } = $.getRelativeCoordsOfTwoElems(this.table, hoveredColumnCell);
+          const { width } = hoveredColumnCell.getBoundingClientRect();
+
           return {
-            left: `calc((100% - var(--cell-size)) / (${this.numberOfColumns} * 2) * (1 + (${column} - 1) * 2))`
+            left: `${Math.ceil(fromLeftBorder + width / 2)}px`
           };
         });
       }

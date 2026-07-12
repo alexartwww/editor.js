@@ -70,6 +70,12 @@ export default class TableBlock {
     };
     this.table = null;
     this.block = block;
+
+    /**
+     * Whether the "Stretch"/"Collapse" tune is offered in the block settings.
+     * Shown by default; pass `stretchTune: false` in the tool config to hide it.
+     */
+    this.stretchTuneEnabled = this.config?.stretchTune !== false;
   }
 
   /**
@@ -110,7 +116,7 @@ export default class TableBlock {
    * @returns {Array}
    */
   renderSettings() {
-    return [
+    const tunes = [
       {
         label: this.api.i18n.t('With headings'),
         icon: IconTableWithHeadings,
@@ -131,7 +137,11 @@ export default class TableBlock {
           this.data.withHeadings = false;
           this.table.setHeadingsSetting(this.data.withHeadings);
         }
-      }, {
+      }
+    ];
+
+    if (this.stretchTuneEnabled) {
+      tunes.push({
         label: this.data.stretched ? this.api.i18n.t('Collapse') : this.api.i18n.t('Stretch'),
         icon: this.data.stretched ? IconCollapse : IconStretch,
         closeOnActivate: true,
@@ -140,8 +150,10 @@ export default class TableBlock {
           this.data.stretched = !this.data.stretched;
           this.block.stretched = this.data.stretched;
         }
-      }
-    ];
+      });
+    }
+
+    return tunes;
   }
   /**
    * Extract table data from the view

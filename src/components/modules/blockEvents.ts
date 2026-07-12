@@ -376,9 +376,13 @@ export default class BlockEvents extends Module {
     const { BlockManager, Caret } = this.Editor;
     const { currentBlock, previousBlock } = BlockManager;
 
-    if (previousBlock?.settings?.holdFirstHeader === true) {
-      return;
-    }
+    /**
+     * The protected first H1 must never be removed or merged into, but the
+     * Block right after it (e.g. an empty H2) should still be deletable with
+     * Backspace like any other Block.
+     */
+    const isPreviousBlockProtectedH1 = previousBlock?.settings?.holdFirstHeader === true
+      && previousBlock?.currentInput?.tagName === 'H1';
 
     if (currentBlock === undefined) {
       return;
@@ -423,8 +427,9 @@ export default class BlockEvents extends Module {
 
     /**
      * If prev Block is empty, it should be removed just like a character
+     * — unless it's the protected first H1, which must stay in place.
      */
-    if (previousBlock.isEmpty) {
+    if (previousBlock.isEmpty && !isPreviousBlockProtectedH1) {
       BlockManager.removeBlock(previousBlock);
 
       return;
@@ -442,6 +447,16 @@ export default class BlockEvents extends Module {
       const newCurrentBlock = BlockManager.currentBlock;
 
       Caret.setToBlock(newCurrentBlock, Caret.positions.END);
+
+      return;
+    }
+
+    /**
+     * Never merge Block's content into the protected first H1 — just move
+     * the caret there and leave both Blocks as they are.
+     */
+    if (isPreviousBlockProtectedH1) {
+      Caret.setToBlock(previousBlock, Caret.positions.END);
 
       return;
     }
