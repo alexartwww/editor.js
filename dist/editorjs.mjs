@@ -7037,7 +7037,7 @@ class nl extends E {
    * @param {KeyboardEvent} event - keydown
    */
   backspace(e) {
-    var c, d, u, p;
+    var c, d, u, p, g;
     const { BlockManager: t, Caret: o } = this.Editor, { currentBlock: i, previousBlock: s } = t, r = ((c = s == null ? void 0 : s.settings) == null ? void 0 : c.holdFirstHeader) === !0 && ((d = s == null ? void 0 : s.currentInput) == null ? void 0 : d.tagName) === "H1";
     if (i === void 0 || !b.isCollapsed || !i.currentInput || !Ne(i.currentInput))
       return;
@@ -7055,18 +7055,20 @@ class nl extends E {
       if (((u = i.settings) == null ? void 0 : u.holdOnLastBackspace) === !0)
         return;
       t.removeBlock(i);
-      const g = t.currentBlock;
-      o.setToBlock(g, o.positions.END);
+      const f = t.currentBlock;
+      o.setToBlock(f, o.positions.END);
       return;
     }
     if (r) {
+      if (((p = i.settings) == null ? void 0 : p.holdOnLastBackspace) === !0)
+        return;
       o.setToBlock(s, o.positions.END);
       return;
     }
     if (xo(s, i))
       this.mergeBlocks(s, i);
     else {
-      if (((p = i.settings) == null ? void 0 : p.holdOnLastBackspace) === !0)
+      if (((g = i.settings) == null ? void 0 : g.holdOnLastBackspace) === !0)
         return;
       o.setToBlock(s, o.positions.END);
     }

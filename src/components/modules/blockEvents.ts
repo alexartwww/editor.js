@@ -452,10 +452,16 @@ export default class BlockEvents extends Module {
     }
 
     /**
-     * Never merge Block's content into the protected first H1 — just move
-     * the caret there and leave both Blocks as they are.
+     * Never merge Block's content into the protected first H1. Normally we'd
+     * still move the caret there, but respect holdOnLastBackspace just like
+     * the regular non-mergeable case below — otherwise Backspace escapes a
+     * holdOnLastBackspace Block (e.g. ximages/xvideo caption) whenever it
+     * happens to sit right after the protected H1.
      */
     if (isPreviousBlockProtectedH1) {
+      if (currentBlock.settings?.holdOnLastBackspace === true) {
+        return;
+      }
       Caret.setToBlock(previousBlock, Caret.positions.END);
 
       return;
