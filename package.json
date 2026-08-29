@@ -4,7 +4,7 @@
   "description": "Editor.js — open source block-style WYSIWYG editor with JSON output",
   "main": "dist/editorjs.umd.js",
   "module": "dist/editorjs.mjs",
-  "types": "./types/index.d.ts",
+  "types": "./dist/types/index.d.ts",
   "keywords": [
     "codex editor",
     "text editor",
@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build --mode production",
+    "build": "vite build --mode production && node scripts/copy-types.mjs",
     "build:test": "vite build --mode test",
     "lint": "eslint src/ --ext .ts && yarn lint:tests",
     "lint:errors": "eslint src/ --ext .ts --quiet",
