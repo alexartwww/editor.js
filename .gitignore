@@ -15,6 +15,9 @@ test/cypress/videos
 
 dist/
 
+# local working clones of plugin forks (kept here for convenience, not part of the repo)
+/assets/*/
+
 coverage/
 .nyc_output/
 .vscode/launch.json
