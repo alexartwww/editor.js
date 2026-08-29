@@ -5,6 +5,11 @@
   "main": "dist/editorjs.umd.js",
   "module": "dist/editorjs.mjs",
   "types": "./dist/types/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "types/*": ["./dist/types/*"]
+    }
+  },
   "keywords": [
     "codex editor",
     "text editor",
